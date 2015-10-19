@@ -2,11 +2,13 @@
 
 [![npm](https://img.shields.io/npm/l/express.svg)](https://github.com/johnhof/micron/blob/master/LICENSE)  [![Dependencies](https://img.shields.io/david/johnhof/micron.svg)](https://david-dm.org/johnhof/micron) [![Join the chat at https://gitter.im/johnhof/micron](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/johnhof/micron?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Micron is a microservice architecture to allow a single stack to be used regardless of what communication method is bet for the purpose. A set of micron based servers can be networked together, making requests via the [micron-client](https://github.com/johnhof/micron-client) without concern for what approach is used.
+Micron is a microservice architecture to allow a single stack to be used regardless of what communication method is best for the purpose. A set of micron based servers can be networked together, making requests via the [micron-client](https://github.com/johnhof/micron-client) without concern for what approach is used.
 
-Switching from http to [ØMQ](http://zeromq.org/) (and more, coming soon) is as easy as flipping a flag in a config. On startup, the server will spawn a child process for every service specified in the `config/index.json/services` array.
+Switching from http to [ØMQ](http://zeromq.org/) (and more, coming soon) is as easy as flipping a boolean in a config. On startup, the server will spawn a child process for every service specified in the `config/index.json#/services` array.
 
 This repo contains a single user controller, a naive implementation of a user microservice. In theory, this repo can be copied and made to implement any microservice by changing only controllers, models, and configs.
+
+Heres a pretty piture to summarize a small microservice network using micron and its client for communication.
 
 <img src="http://i.imgur.com/fm46NVd.png?1" width="400">
 
@@ -24,11 +26,13 @@ This repo contains a single user controller, a naive implementation of a user mi
   - [Koa Waterline](https://www.npmjs.com/package/koa-waterline) (easily swapped)
     - Builds the client for the database
 
-`npm install && npm start` - runs on port 80
+`npm install && npm start` - runs `nodemon` on port 8000 in development. No timestamps in log
 
-`npm install && PORT=8000 node server` - run on port 8000
+`npm install && PORT=8000 node server` - runs on port 8000, in production. logs include timestamps
 
-For a quick test, run `node sandbox/http` or `node sandbox/zeromq` against a live server and checkout the js logic in the files
+`npm install && node server` - runs on port 80, in production
+
+For a quick test, update sandbox files for your port configuration and run `node sandbox/http` or `node sandbox/zeromq` against a live server.
 
 # Key
 

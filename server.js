@@ -34,6 +34,7 @@ _.each(config.services, function (service, index) {
   let logColor = ((index * COLOR_MULT) + COLOR_OFFSET);
   let log = clc.xterm(logColor);
   let logFile = fs.createWriteStream(LOGS_DIR + '/' + service + '.log');
+  let servicePrefix = service.toUpperCase() + ': ';
 
   // spawn process
   let proc = spawn('node', ['./services/' + service, '--log_color', logColor]);
@@ -43,9 +44,9 @@ _.each(config.services, function (service, index) {
   proc.stdout.on('data', function (data) {
     let result = '';
     if (!config.local.isDev) {
-      result = log(service + ': ' + moment.utc().toString() + ':  ') + data;
+      result = log(servicePrefix + moment.utc().toString() + ':  ') + data;
     } else {
-      result = log(service + ':  ') + data;
+      result = log(servicePrefix + data);
     }
 
     process.stdout.write(result);
@@ -56,9 +57,9 @@ _.each(config.services, function (service, index) {
   proc.stderr.on('data', function (data) {
     let result = '';
     if (!config.local.isDev) {
-      result = log(service + ': ' + moment.utc().toString() + ':  ') + clc.red('ERROR: ') + data;
+      result = log(servicePrefix + moment.utc().toString() + ':  ') + clc.red('ERROR: ') + data;
     } else {
-      result = log(service + ':  ') + clc.red('ERROR: ')  + data;
+      result = log(servicePrefix + clc.red('ERROR: ')  + data);
     }
 
     process.stderr.write(result);
