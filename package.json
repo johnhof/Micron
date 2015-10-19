@@ -1,5 +1,5 @@
 {
-  "name": "Southern-Wolf",
+  "name": "micron",
   "version": "0.0.1",
   "description": "Hart Auth Server",
   "main": "server.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/johnhof/Southern-Wolf.git"
+    "url": "https://github.com/johnhof/micron.git"
   },
   "author": "John Hofrichter",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/johnhof/Southern-Wolf/issues"
+    "url": "https://github.com/johnhof/micron/issues"
   },
-  "homepage": "https://github.com/johnhof/Southern-Wolf",
+  "homepage": "https://github.com/johnhof/micron",
   "dependencies": {
     "app-root-path": "^1.0.0",
     "async": "^1.4.2",
