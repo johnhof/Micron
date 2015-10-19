@@ -8,7 +8,7 @@ Switching from http to [ØMQ](http://zeromq.org/) (and more, coming soon) is as 
 
 This repo contains a single user controller, a naive implementation of a user microservice. In theory, this repo can be copied and made to implement any microservice by changing only controllers, models, and configs.
 
-<img src="https://drive.google.com/file/d/0B4CCSDmplz8yS2x1emNCOElyS3c/view?usp=sharing" width="400">
+<img src="http://i.imgur.com/fm46NVd.png?1" width="400">
 
 - Requirements
   - Node 4.x.x
