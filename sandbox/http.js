@@ -12,7 +12,7 @@ let client = micron({
   userService : {
     prefix: 'v1',
     host: '127.0.0.1',
-    port: 8001
+    port: 8000
   }
 });
 
