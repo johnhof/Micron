@@ -2,8 +2,7 @@
 
 [![npm](https://img.shields.io/npm/l/express.svg)](https://github.com/johnhof/micron/blob/master/LICENSE)  [![Dependencies](https://img.shields.io/david/johnhof/micron.svg)](https://david-dm.org/johnhof/micron) [![Join the chat at https://gitter.im/johnhof/micron](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/johnhof/micron?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-
-A microservice architecture to allow a single stack to be used regardless of what communication method is bet for the purpose. A set of micron based servers can be networked together, making requests via the [micron-client](https://github.com/johnhof/micron-client) without concern for what approach is used.
+Micron is a microservice architecture to allow a single stack to be used regardless of what communication method is bet for the purpose. A set of micron based servers can be networked together, making requests via the [micron-client](https://github.com/johnhof/micron-client) without concern for what approach is used.
 
 Switching from http to [ØMQ](http://zeromq.org/) (and more, coming soon) is as easy as flipping a flag in a config. On startup, the server will spawn a child process for every service specified in the `config/index.json/services` array.
 
@@ -61,6 +60,7 @@ expects a `req` message of the structure
 
 # Contributing
 
+New services can be added to the services directory. Each service added should to its best to mimic the controller environment created by the [koa framework](http://koajs.com/). Ideally, the controllers should not concernt themselves with the communication method used to make the request
 
 # Tests
 
