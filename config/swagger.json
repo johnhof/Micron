@@ -1,0 +1,188 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Hart Authentication Service",
+    "description": "I'm your Huckleberry",
+    "version": "1.0.0"
+  },
+  "host": "auth.hartsolution.com",
+  "schemes": [
+    "https"
+  ],
+  "basePath": "/v1",
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/user/create": {
+      "post": {
+        "description": "Create user",
+        "tags": [
+          "user"
+        ],
+        "responses": {
+          "200": {
+            "description": "User created",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse"
+            }
+          }
+        },
+        "parameters": [{
+          "name": "first_name",
+          "in": "body",
+          "description": "User first name",
+          "type": "string",
+          "required": true
+        }, {
+          "name": "last_name",
+          "in": "body",
+          "description": "User last name",
+          "type": "string",
+          "required": true
+        }, {
+          "name": "email",
+          "in": "body",
+          "description": "Account Email",
+          "type": "string",
+          "email": true,
+          "required": true
+        }, {
+          "name": "password",
+          "in": "body",
+          "description": "Account password",
+          "type": "string",
+          "required": true
+        }]
+      }
+    },
+    "/user/:id": {
+      "get": {
+        "description": "Get user",
+        "tags": [
+          "user"
+        ],
+        "responses": {
+          "200": {
+            "description": "User found",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse"
+            }
+          }
+        }
+      }
+    },
+    "/user/:id/update": {
+      "put": {
+        "description": "Update user",
+        "tags": [
+          "user"
+        ],
+        "responses": {
+          "200": {
+            "description": "USer updated",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse"
+            }
+          }
+        },
+        "parameters": [{
+          "name": "first_name",
+          "in": "body",
+          "description": "User first name",
+          "type": "string"
+        }, {
+          "name": "last_name",
+          "in": "body",
+          "description": "User last name",
+          "type": "string"
+        }]
+      }
+    },
+    "/user/:id/remove": {
+      "delete": {
+        "description": "Remove user",
+        "tags": [
+          "user"
+        ],
+        "responses": {
+          "200": {
+            "description": "User removed",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "BaseResponse": {
+      "type": "object",
+      "required": [
+        "data",
+        "status",
+        "success"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "default": false
+        },
+        "data": {
+          "type": "mixed"
+        },
+        "status": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 600
+        }
+      }
+    },
+    "Success": {
+      "allOf": [
+        { "$ref": "#/definitions/BaseResponse" },
+        {
+          "properties": {
+            "success": {
+              "default": true
+            },
+            "data": {
+              "default": "OK"
+            },
+            "status": {
+              "default" : 200
+            }
+          }
+        }
+      ]
+    }
+  }
+}

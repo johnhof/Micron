@@ -1,0 +1,32 @@
+{
+  "services": ["http", "zeromq"],
+  "logging": {
+    "directory": "./logs"
+  },
+  "swagger" : {
+    "key"  :{
+      "name" : "key",
+      "value": "hart"
+    }
+  },
+  "lusca": {
+    "csrf": false,
+    "csp": {},
+    "xframe": "SAMEORIGIN",
+    "p3p": "MICRON-abcdefg",
+    "xssProtection": false,
+    "hsts": {
+      "maxAge": 31536000,
+      "includeSubDomains": true
+    }
+  },
+  "resources": {
+    "couch": {
+      "adapter": "couch",
+      "host": "localhost",
+      "port": "5984",
+      "username": "",
+      "password": ""
+    }
+  }
+}
