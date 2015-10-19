@@ -13,6 +13,7 @@ This repo contains a single user controller, a naive implementation of a user mi
 - Requirements
   - Node 4.x.x
   - CouchDB (demo purposes only)
+  - ØMQ
 
 - Internal Dependencies
   - [koa](http://koajs.com/)
