@@ -4,11 +4,11 @@
 
 Micron is a microservice architecture to allow a single stack to be used regardless of what communication method is best for the purpose. A set of micron based servers can be networked together, making requests via the [micron-client](https://github.com/johnhof/micron-client) without concern for what approach is used.
 
-Switching from http to [ØMQ](http://zeromq.org/) (and more, coming soon) is as easy as flipping a boolean in a config. On startup, the server will spawn a child process for every service specified in the `config/index.json#/services` array.
+Switching from HTTP to [ØMQ](http://zeromq.org/) (and more, coming soon) is as easy as flipping a boolean in a config. On startup, the server will spawn a child process for every service specified in the `config/index.json#/services` array.
 
 This repo contains a single user controller, a naive implementation of a user microservice. In theory, this repo can be copied and made to implement any microservice by changing only controllers, models, and configs.
 
-Heres a pretty piture to summarize a small microservice network using micron and its client for communication.
+Heres a pretty picture to summarize a small microservice network using micron and its client for communication.
 
 <img src="http://i.imgur.com/fm46NVd.png?1" width="400">
 
