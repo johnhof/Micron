@@ -1,6 +1,6 @@
 {
   "name": "micron",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Hart Auth Server",
   "main": "server.js",
   "scripts": {

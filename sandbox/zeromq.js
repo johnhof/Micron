@@ -81,11 +81,9 @@ co(function *() {
   log('end: ' + end);
   log('duration: ' + (end - start));
 
-  // client.close();
   process.exit();
 
 }).catch(function (e) {
-  // client.close();
   console.error(e.stack);
   process.exit();
 });
