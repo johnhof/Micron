@@ -30,6 +30,9 @@ co(function *() {
   let result;
   let user;
 
+  let start = new Date();
+  log('start: ' + start);
+
   log('\n++++++++++++++++++++++++++++++++++++\n');
 
   result = yield client.userService.post('user/create', {
@@ -73,7 +76,16 @@ co(function *() {
   log(result);
 
   log('\n++++++++++++++++++++++++++++++++++++\n');
+
+  let end = new Date();
+  log('end: ' + end);
+  log('duration: ' + (end - start));
+
+  // client.close();
+  process.exit();
+
 }).catch(function (e) {
+  // client.close();
   console.error(e.stack);
-  process.kill();
+  process.exit();
 });

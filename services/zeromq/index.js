@@ -103,6 +103,7 @@ let execFlow = function *(mWare, handler) {
 
 responder.on('message', function (message) {
   let respond = function (msg, data) {
+    if (msg.id) data.id = msg.id;
     data = JSON.stringify(data);
     console.log('  --> ' + (msg.method || 'unkown method').toUpperCase() + ' ' + (msg.path || 'unknown path'));
     responder.send(data);
