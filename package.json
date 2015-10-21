@@ -38,7 +38,7 @@
     "koa-router": "^5.2.3",
     "koa-waterline": "^2.0.1",
     "lodash": "^3.10.1",
-    "micron-client": "git+ssh://git@github.com:johnhof/micron-client.git#master",
+    "micron-client": "^1.0.2",
     "moment": "^2.10.6",
     "sails-couchdb-orm": "git+ssh://git@github.com:gohart/sails-couchdb-orm.git#master",
     "string-template": "^0.2.1",
