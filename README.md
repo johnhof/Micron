@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/l/express.svg)](https://github.com/johnhof/micron/blob/master/LICENSE)  [![Dependencies](https://img.shields.io/david/johnhof/micron.svg)](https://david-dm.org/johnhof/micron) [![Join the chat at https://gitter.im/johnhof/micron](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/johnhof/micron?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Micron is a microservice architecture to allow a single stack to be used regardless of what communication method is best for the purpose. A set of micron based servers can be networked together, making requests via the [micron-client](https://github.com/johnhof/micron-client) without concern for what approach is used.
+Micron is a microservice architecture template to allow a single stack to be used regardless of what communication method is best for the purpose. A set of micron based servers can be networked together, making requests via the [micron-client](https://github.com/johnhof/micron-client) without concern for what approach is used.
 
 Switching from HTTP to [ØMQ](http://zeromq.org/) (and more, coming soon) is as easy as flipping a boolean in a config. On startup, the server will spawn a child process for every service specified in the `config/index.json#/services` array.
 
@@ -36,12 +36,27 @@ For a quick test, update sandbox files for your port configuration and run `node
 
 # Key
 
+- [Starting a New Micron Service](#starting-a-new-micron-service)
 - [Services](#services)
   - [HTTP](#http)
   - [ØMQ](#Ømq)
 - [Contributing](#contributing)
 - [Tests](#tests)
 - [Authors](#authors)
+
+# Starting a New Micron Service
+
+The following pattern is recommended when starting a new micron service
+
+- `$ git clone git@github.com:johnhof/micron.git [NEW_PROJECT_NAME]`
+- `$ cd [NEW_PROJECT_NAME]`
+- `$ git remote rename origin micron`
+- `$ git remote add origin [NEW_PROJECT_GIT_REPO]`
+
+This will allow you to pull new features, service support, and bug fix's from the micron repository, while still allowing you adjust and fill out the micron template as normal.
+
+For example, too pull in a bug fix or a service, you now only have to run `$ git pull micron master` and resolve any merge conflics, rather than hand editing the files.
+
 
 # Services
 
