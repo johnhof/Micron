@@ -125,7 +125,7 @@ responder.on('message', function (message) {
   console.log('  <-- ' + (message.method || 'unkown method').toUpperCase()  + ' ' + (message.path || 'unknown path'));
 
   co(function *() {
-    let ctx = this;
+    let ctx = {};
     ctx.request = {};
 
     try {
