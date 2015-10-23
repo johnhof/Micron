@@ -46,7 +46,7 @@ _.each(config.services, function (service, index) {
     if (!config.local.isDev) {
       result = log(servicePrefix + moment.utc().toString() + ':  ') + data;
     } else {
-      result = log(servicePrefix + data);
+      result = log(servicePrefix) + data;
     }
 
     process.stdout.write(result);
@@ -59,7 +59,7 @@ _.each(config.services, function (service, index) {
     if (!config.local.isDev) {
       result = log(servicePrefix + moment.utc().toString() + ':  ') + clc.red('ERROR: ') + data;
     } else {
-      result = log(servicePrefix + clc.red('ERROR: ')  + data);
+      result = log(servicePrefix + clc.red('ERROR: ')) + data;
     }
 
     process.stderr.write(result);
