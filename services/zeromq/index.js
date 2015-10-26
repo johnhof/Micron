@@ -131,6 +131,7 @@ responder.on('message', function (message) {
     try {
       ctx.request.method = message.method;
       ctx.request.path = message.path;
+      ctx.request.query = message.query || {};
       ctx.request.body = message.form || {};
       ctx.params = message.parameters;
 
