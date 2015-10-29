@@ -17,6 +17,34 @@
     "application/json"
   ],
   "paths": {
+    "/status": {
+      "get": {
+        "description": "Get status",
+        "tags": [
+          "status"
+        ],
+        "responses": {
+          "200": {
+            "description": "User found",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse"
+            }
+          }
+        },
+        "parameters": [{
+          "name": "shallow",
+          "in": "query",
+          "description": "If true, do not request /status of dependencies",
+          "type": "boolean"
+        }]
+      }
+    },
     "/user/create": {
       "post": {
         "description": "Create user",

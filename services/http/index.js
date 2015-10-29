@@ -10,6 +10,7 @@ let root = require('app-root-path');
 let uuid =  require('uuid');
 let parser = require('koa-bodyparser');
 let waterline = require('../../lib/middleware/waterline');
+let micron = require('micron-client');
 
 let logger = require('./middleware/logger');
 let errorHandler = require('./middleware/error_handler');
@@ -38,6 +39,9 @@ app.use(lusca(config.lusca));
 
 // Universal middleware
 app.use(waterline);
+
+// micron
+app.use(micron.middleware.koa(config('services')));
 
 fleek(app, {
   controllers: root + '/controllers',

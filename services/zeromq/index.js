@@ -12,17 +12,20 @@ let responseBinding = require('../../lib/response_binding');
 let helpers = require('../../lib/helpers');
 let co = require('co');
 let path = require('path');
+let micron = require('micron-client');
 
 let templateTracer = helpers.templateTracer;
 let toss = helpers.toss;
 
+const config = require('config');
+const swagger = swaggerPaser.parse('../config/api.json');
+
 // set up middleware exec order
 let middleware = [
-  require('../../lib/middleware/waterline')
+  require('../../lib/middleware/waterline'),
+  micron.middleware.koa(config('services'))
 ];
 
-const config = require('config');
-const swagger = swaggerPaser.parse('../config/swagger.json');
 
 let traceTemplate = templateTracer(swagger.paths);
 
