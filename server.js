@@ -14,7 +14,7 @@ const PURPLE = 53;
 const COLOR_MULT = 60;
 const COLOR_OFFSET = 60;
 
-const TEXT_OPTS = ['A series of tubes.', 'Bro, do you even scale?'];
+const TEXT_OPTS = ['Turtles all the way down', 'Bro, do you even scale?'];
 const ASCII_FILE = './services/ascii.txt';
 
 if (fs.existsSync(ASCII_FILE)) {
