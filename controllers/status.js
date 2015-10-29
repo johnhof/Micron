@@ -8,6 +8,7 @@ module.exports.get = function *() {
     services: 'Not Shown'
   };
 
+  // get the status of other micron services
   if (!ctx.request.query.shallow) {
     ctx.services = yield ctx.micron.status();
   }
