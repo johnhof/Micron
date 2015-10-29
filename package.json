@@ -1,7 +1,7 @@
 {
   "name": "micron",
   "version": "0.0.2",
-  "description": "Hart Auth Server",
+  "description": "Microservice template",
   "main": "server.js",
   "scripts": {
     "test": "mocha ./tests/*",
