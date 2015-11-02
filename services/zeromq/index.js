@@ -1,7 +1,6 @@
 'use strict';
 
 let clc = require('cli-color');
-let program = require('commander');
 let zmq = require('zmq');
 let swaggerPaser = require('fleek-parser');
 let _ = require('lodash');
@@ -17,17 +16,17 @@ let micron = require('micron-client');
 let templateTracer = helpers.templateTracer;
 let toss = helpers.toss;
 
-const config = require('config');
-const swagger = swaggerPaser.parse('../config/api.json');
+const PROGRAM = require('../../lib/commander');
+const CONFIG = require('config');
+const SWAGGER = swaggerPaser.parse('../CONFIG/api.json');
 
 // set up middleware exec order
 let middleware = [
   require('../../lib/middleware/waterline'),
-  micron.middleware.koa(config('services'))
+  micron.middleware.koa(CONFIG('services'))
 ];
 
-
-let traceTemplate = templateTracer(swagger.paths);
+let traceTemplate = templateTracer(SWAGGER.paths);
 
 const CRUD_MAP = {
   post: 'create',
@@ -36,19 +35,12 @@ const CRUD_MAP = {
   delete: 'destroy'
 };
 
-program
-  .version(config.package.version)
-  .description('Messaging authentication service')
-  .option('-c, --log_color <color_code>', 'Set the color code for logging')
-  .parse(process.argv);
-
-
 let responder = zmq.socket('rep');
 responder.identity = 'subscriber:' + process.pid;
-responder.connect('tcp://' + config.local.host + ':' + config.local.port);
+responder.connect('tcp://' + CONFIG.local.host + ':' + CONFIG.local.port);
 let topicMap = {};
 
-_.each(swagger.sanitizedRoutes, function (route) {
+_.each(SWAGGER.sanitizedRoutes, function (route) {
   let namespaces = [route.method + ' -- ' + route.path];
 
   let controller;
@@ -138,7 +130,7 @@ responder.on('message', function (message) {
       ctx.request.body = message.form || {};
       ctx.params = message.parameters;
 
-      let template = traceTemplate(message.method, message.path.replace(swagger.basePath, ''));
+      let template = traceTemplate(message.method, message.path.replace(SWAGGER.basePath, ''));
       let handler = topicMap[message.method.toLowerCase() + ' -- ' + template];
       if (genit.isGenerator(handler)) {
         ctx = responseBinding(ctx);
@@ -168,4 +160,4 @@ responder.on('message', function (message) {
 });
 
 
-console.log(clc.xterm(program.log_color)('Messaging services listening to: ') + config.local.host + ':' + config.local.port);
+console.log(clc.xterm(PROGRAM['log-color'])('Messaging services listening to: ') + CONFIG.local.host + ':' + CONFIG.local.port);
