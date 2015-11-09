@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "mocha ./tests/*",
-    "start": "PORT=8000 NODE_ENV=dev nodemon server"
+    "start": "node server --env dev"
   },
   "repository": {
     "type": "git",

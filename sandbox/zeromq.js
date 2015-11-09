@@ -13,7 +13,7 @@ let client = micron({
     method: 'zeromq',
     prefix: 'v1',
     host: '127.0.0.1',
-    port: 8000
+    port: 1991
   }
 });
 

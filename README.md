@@ -26,16 +26,13 @@ Heres a pretty picture to summarize a small microservice network using micron an
   - [Koa Waterline](https://www.npmjs.com/package/koa-waterline) (easily swapped)
     - Builds the client for the database
 
-`npm install && npm start` - runs `nodemon` on port 8000 in development. No timestamps in log
-
-`npm install && PORT=8000 node server` - runs on port 8000, in production. logs include timestamps
-
-`npm install && node server` - runs on port 80, in production
+`npm install && node server` - runs `nodemon` on port 1991 in development
 
 For a quick test, update sandbox files for your port configuration and run `node sandbox/http` or `node sandbox/zeromq` against a live server.
 
 # Key
 
+- [Configuration](#confirguration)
 - [Starting a New Micron Service](#starting-a-new-micron-service)
 - [Services](#services)
   - [HTTP](#http)
@@ -43,6 +40,58 @@ For a quick test, update sandbox files for your port configuration and run `node
 - [Contributing](#contributing)
 - [Tests](#tests)
 - [Authors](#authors)
+
+# Configuration
+
+Configuration options are always set in the same order: `JSON Configs` ->  `Command Line Flags` -> `Environment Vsriables`
+
+### Environment Variables
+
+- `NOD_ENV`
+  - Determines various aspects of functionality
+  - Options:
+    - `dev|development`
+      - Logs are all prefixed with the service (`ZERO:  `, `HTTP:  `, etc)
+    - `prod|production`
+      - Logs are all prefixed with the service and ISO 8601 timestamp (`ZERO:  Sun Nov 08 2015 22:37:46 GMT+0000`, `HTTP:  Sun Nov 08 2015 22:37:46 GMT+0000`, etc)
+- `PORT`
+  - The port on which the http service will listen
+  - Options: `Number`
+
+### Command Flags
+
+- `-p`, `--port [port]`
+  - The port on which the http service will listen
+  - Options: `Number`
+- `-e`, `--env [environment]`
+  - Determines various aspects of functionality
+  - Options:
+    - `dev|development`
+      - Logs are all prefixed with the service (`ZERO:  `, `HTTP:  `, etc)
+    - `prod|production`
+      - Logs are all prefixed with the service and ISO 8601 timestamp (`ZERO:  Sun Nov 08 2015 22:37:46 GMT+0000`, `HTTP:  Sun Nov 08 2015 22:37:46 GMT+0000`, etc)
+- `-s`, `--syslog`
+  - Pipe logs to syslog
+- `-C`, `--config [config directory]`
+  - External config directory
+  - Options: `String` path to config directory
+- `-c`, `--log-color [xterm code]`
+  - Xterm color code as the base color for logs
+  - Options: `Number`
+- `-P`, `--preserve-disk`
+  - Do not write logs to disk
+
+### Config
+
+_Index.json_
+
+```json
+{
+  "local": {
+    "port": "HTTP_SERVICE_PORT"
+  }
+}
+```
 
 # Starting a New Micron Service
 

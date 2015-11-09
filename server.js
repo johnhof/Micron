@@ -34,19 +34,16 @@ _.each(CONFIG.services, function (service, index) {
   // logging
   let logColor = ((index * COLOR_MULT) + COLOR_OFFSET);
   let log = clc.xterm(logColor);
-  let logFile = fs.createWriteStream(LOGS_DIR + '/' + service + '.log');
+  let logFile = PROGRAM['preserve-disk'] ? fs.createWriteStream(LOGS_DIR + '/' + service + '.log') : false;
   let servicePrefix = service.toUpperCase() + ': ';
 
-  let command = ['./services/' + service];
-  if (PROGRAM['log-color']) command.push('--log-color'); command.push(PROGRAM['log-color']);
-  if (PROGRAM.config) command.push('--config'); command.push(PROGRAM.config);
-  if (PROGRAM.syslog) command.push('--syslog'); command.push(PROGRAM.syslog);
+  let command = PROGRAM.appendParams(['./services/' + service]);
 
   // spawn process
   let proc = spawn('node', command);
 
   // stdout stream
-  proc.stdout.pipe(logFile);
+  if (logFile) proc.stdout.pipe(logFile);
   proc.stdout.on('data', function (data) {
     let result = '';
     if (!CONFIG.local.isDev) {
@@ -59,7 +56,7 @@ _.each(CONFIG.services, function (service, index) {
   });
 
   // stderr stream
-  proc.stderr.pipe(logFile);
+  if (logFile) proc.stderr.pipe(logFile);
   proc.stderr.on('data', function (data) {
     let result = '';
     if (!CONFIG.local.isDev) {
