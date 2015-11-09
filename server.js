@@ -24,7 +24,7 @@ if (fs.existsSync(ASCII_FILE)) {
   console.log('  ' + clc.xterm(PURPLE)(textOpts[Math.floor(Math.random() * textOpts.length)]) + '\n');
 }
 
-if (!fs.existsSync(LOGS_DIR)) fs.mkdirSync(LOGS_DIR);
+if (!fs.existsSync(LOGS_DIR) && !PROGRAM.preserveDisk) fs.mkdirSync(LOGS_DIR);
 
 _.each(CONFIG.services, function (service, index) {
   if (!fs.existsSync('./services/' + service)) {
@@ -34,7 +34,7 @@ _.each(CONFIG.services, function (service, index) {
   // logging
   let logColor = ((index * COLOR_MULT) + COLOR_OFFSET);
   let log = clc.xterm(logColor);
-  let logFile = PROGRAM['preserve-disk'] ? fs.createWriteStream(LOGS_DIR + '/' + service + '.log') : false;
+  let logFile = PROGRAM.preserveDisk ? false : fs.createWriteStream(LOGS_DIR + '/' + service + '.log');
   let servicePrefix = service.toUpperCase() + ': ';
 
   let command = PROGRAM.appendParams(['./services/' + service]);
