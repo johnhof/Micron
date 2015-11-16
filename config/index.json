@@ -25,8 +25,11 @@
       "adapter": "couch",
       "host": "localhost",
       "port": "5984",
-      "username": "",
-      "password": ""
+      "username": ""
+    },
+    "zeromq": {
+      "host": "127.0.0.1",
+      "port": 5555
     }
   }
 }

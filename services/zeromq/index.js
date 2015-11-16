@@ -37,7 +37,7 @@ const CRUD_MAP = {
 
 let responder = zmq.socket('rep');
 responder.identity = 'subscriber:' + process.pid;
-responder.connect('tcp://' + CONFIG.local.host + ':' + CONFIG.local.port);
+responder.connect('tcp://' + CONFIG.resources.zeromq.host + ':' + CONFIG.resources.zeromq.port);
 let topicMap = {};
 
 _.each(SWAGGER.sanitizedRoutes, function (route) {
