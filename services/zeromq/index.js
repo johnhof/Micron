@@ -160,4 +160,4 @@ responder.on('message', function (message) {
 });
 
 
-console.log(clc.xterm(PROGRAM['log-color'])('Messaging services listening to: ') + CONFIG.local.host + ':' + CONFIG.local.port);
+console.log(clc.xterm(PROGRAM['log-color'])('Messaging services listening to: ') + CONFIG.resources.zeromq.host + ':' + CONFIG.resources.zeromq.port);
