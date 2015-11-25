@@ -1,4 +1,5 @@
 {
+  "micron": "1.1.0",
   "services": ["http", "zeromq"],
   "logging": {
     "directory": "./logs"
