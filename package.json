@@ -1,7 +1,7 @@
 {
   "name": "micron",
-  "version": "0.0.2",
-  "description": "Microservice template",
+  "version": "1.1.2",
+  "description": "Micron microservice template",
   "main": "server.js",
   "scripts": {
     "test": "mocha ./tests/*",
