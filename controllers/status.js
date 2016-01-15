@@ -10,7 +10,7 @@ module.exports.get = function *() {
 
   // get the status of other micron services
   if (!ctx.request.query.shallow) {
-    ctx.services = yield ctx.micron.status();
+    response.services = yield ctx.micron.status();
   }
 
   ctx.respond(response);
