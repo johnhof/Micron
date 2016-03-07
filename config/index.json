@@ -1,23 +1,39 @@
 {
-  "services": ["http", "zeromq"],
-  "logging": {
-    "directory": "./logs"
-  },
-  "swagger" : {
-    "key"  :{
-      "name" : "key",
-      "value": "hart"
+  "serve": ["http", "zeromq"],
+  "internal": {
+    "motd": {
+      "text": ["Turtles all the way down", "Bro, do you even scale?"],
+      "ascii": "./services/ascii.txt"
+    },
+    "logging": {
+      "directory": "./logs",
+      "level": "info",
+      "streams": [{
+
+      }]
+    },
+    "swagger" : {
+      "key"  :{
+        "name" : "key",
+        "value": "hart"
+      }
+    },
+    "lusca": {
+      "csrf": false,
+      "csp": {},
+      "xframe": "SAMEORIGIN",
+      "p3p": "MICRON-abcdefg",
+      "xssProtection": false,
+      "hsts": {
+        "maxAge": 31536000,
+        "includeSubDomains": true
+      }
     }
   },
-  "lusca": {
-    "csrf": false,
-    "csp": {},
-    "xframe": "SAMEORIGIN",
-    "p3p": "MICRON-abcdefg",
-    "xssProtection": false,
-    "hsts": {
-      "maxAge": 31536000,
-      "includeSubDomains": true
+  "external": {
+    "dummy_third_party": {
+      "host": "foo.bar.notarealurl",
+      "port": 80
     }
   },
   "resources": {
@@ -30,6 +46,13 @@
     "zeromq": {
       "host": "127.0.0.1",
       "port": 5555
+    }
+  },
+  "services":{
+    "dummy": {
+      "micron": "http",
+      "host": "127.0.0.1",
+      "port": 8080
     }
   }
 }

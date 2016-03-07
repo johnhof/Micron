@@ -7,6 +7,7 @@ let spawn = require('child_process').spawn;
 let moment = require('moment');
 let mixins = require('./lib/mixins');
 let toss = require('./lib/helpers').toss;
+let bunyan = require('bunyan');
 
 const PROGRAM = require('./lib/commander');
 const CONFIG = require('config');
@@ -16,22 +17,30 @@ const COLOR_MULT = 60;
 const COLOR_OFFSET = 60;
 
 const TEXT_OPTS = ['Turtles all the way down', 'Bro, do you even scale?'];
-const ASCII_FILE = './services/ascii.txt';
 
-if (fs.existsSync(ASCII_FILE)) {
-  let textOpts = TEXT_OPTS;
+// All important ascii art
+const ASCII_FILE = CONFIG.find('internal.motd.ascii');
+if (fs.existsSync()) {
+  let textOpts = CONFIG.find('internal.motd.text');
   console.log(clc.xterm(PURPLE)(fs.readFileSync(ASCII_FILE).toString()));
   console.log('  ' + clc.xterm(PURPLE)(textOpts[Math.floor(Math.random() * textOpts.length)]) + '\n');
 }
 
-if (!fs.existsSync(LOGS_DIR) && !PROGRAM.preserveDisk) fs.mkdirSync(LOGS_DIR);
+// Set up logger
+let logConf = CONFIG.logger;
+logConf.name = CONFIG.package.name;
+logConf.streams.push({ level: 'debug', stream: process.stdout });
+logConf.streams.push({ level: 'error', stream: process.stderr });
+logConf.streams.push({ level: 'error', stream: process.stderr });
+if (!fs.existsSync(LOGS_DIR) && !PROGRAM.preserveDisk) logConf.streams.push({ level: 'info', stream: LOGS_DIR });
+let log = bunyan.createLogger(logConf);
 
 _.each(CONFIG.services, function (service, index) {
   if (!fs.existsSync('./services/' + service)) {
     toss('Could not find service [./services/' + service + ']. Verify that the CONFIG matches services');
   }
 
-  // logging
+  // Logging
   let logColor = ((index * COLOR_MULT) + COLOR_OFFSET);
   let log = clc.xterm(logColor);
   let logFile = PROGRAM.preserveDisk ? false : fs.createWriteStream(LOGS_DIR + '/' + service + '.log');
@@ -39,10 +48,10 @@ _.each(CONFIG.services, function (service, index) {
 
   let command = PROGRAM.appendParams(['./services/' + service]);
 
-  // spawn process
+  // Spawn process
   let proc = spawn('node', command);
 
-  // stdout stream
+  // Stdout stream
   if (logFile) proc.stdout.pipe(logFile);
   proc.stdout.on('data', function (data) {
     let result = '';
@@ -55,7 +64,7 @@ _.each(CONFIG.services, function (service, index) {
     process.stdout.write(result);
   });
 
-  // stderr stream
+  // Stderr stream
   if (logFile) proc.stderr.pipe(logFile);
   proc.stderr.on('data', function (data) {
     let result = '';
