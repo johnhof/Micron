@@ -43,7 +43,7 @@ For a quick test, update sandbox files for your port configuration and run `node
 
 # Configuration
 
-Configuration options are always set in the same order: `JSON Configs` ->  `Command Line Flags` -> `Environment Vsriables`
+Configuration options are always set in the same order: `JSON Configs` ->  `Command Line Flags` -> `Environment Variables`
 
 ### Environment Variables
 

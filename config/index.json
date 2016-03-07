@@ -2,15 +2,17 @@
   "serve": ["http", "zeromq"],
   "internal": {
     "motd": {
+      "color": 53,
       "text": ["Turtles all the way down", "Bro, do you even scale?"],
       "ascii": "./services/ascii.txt"
     },
     "logging": {
-      "directory": "./logs",
-      "level": "info",
       "streams": [{
-
-      }]
+        "type": "rotating-file",
+        "path": "./logs/out.log",
+        "period": "1d",
+        "count": 7
+        }]
     },
     "swagger" : {
       "key"  :{
@@ -46,6 +48,12 @@
     "zeromq": {
       "host": "127.0.0.1",
       "port": 5555
+    },
+    "syslog": {
+      "type": "sys",
+      "facility": 16,
+      "host": "127.0.0.1",
+      "port": 514
     }
   },
   "services":{

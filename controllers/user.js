@@ -7,7 +7,7 @@ module.exports.post = function *() {
   let body = ctx.request.body;
   let User = ctx.waterline.collections.user;
   let exists = yield User.findOne({
-    email: body.email
+    email: body.email,
   });
 
   if (exists) {
@@ -31,7 +31,7 @@ module.exports.post = function *() {
 module.exports.get = function *() {
   let ctx = this;
   let user = yield ctx.waterline.collections.user.findOne({
-    _id: ctx.params.id
+    _id: ctx.params.id,
   });
 
   if (user) return ctx.respond(user);
