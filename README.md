@@ -85,12 +85,36 @@ Configuration options are always set in the same order: `JSON Configs` ->  `Comm
 
 _Index.json_
 
-```json
+```js
 {
-  "local": {
-    "port": "HTTP_SERVICE_PORT"
+  "serve": ["http", "zeromq"], // services to run
+  "internal": {
+
+    // internal configs
+
+    "logging": {
+
+      // bunyan config
+
+    }
+  },
+  "external": {
+
+    // thirds party configs
+
+  },
+  "resources": {
+
+    // DBs and other resource configs
+
+  },
+  "services":{
+
+    // other micron dependency configs
+
   }
 }
+
 ```
 
 # Starting a New Micron Service
