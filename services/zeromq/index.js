@@ -2,7 +2,7 @@
 
 let clc = require('cli-color');
 let zmq = require('zmq');
-let swaggerPaser = require('fleek-parser');
+let swaggerParser = require('fleek-parser');
 let _ = require('lodash');
 let genit = require('genit');
 let root = require('app-root-path');
@@ -18,12 +18,12 @@ let toss = helpers.toss;
 
 const PROGRAM = require('../../lib/commander');
 const CONFIG = require('config');
-const SWAGGER = swaggerPaser.parse('../config/api.json');
+const SWAGGER = swaggerParser.parse('../config/api.json');
 
-// set up middleware exec order
+// Set up middleware exec order
 let middleware = [
   require('../../lib/middleware/waterline'),
-  micron.middleware.koa(CONFIG('services'))
+  micron.middleware.koa(CONFIG('services')),
 ];
 
 let traceTemplate = templateTracer(SWAGGER.paths);
@@ -32,7 +32,7 @@ const CRUD_MAP = {
   post: 'create',
   get: 'read',
   put: 'update',
-  delete: 'destroy'
+  delete: 'destroy',
 };
 
 let responder = zmq.socket('rep');
@@ -40,7 +40,7 @@ responder.identity = 'subscriber:' + process.pid;
 responder.connect('tcp://' + CONFIG.resources.zeromq.host + ':' + CONFIG.resources.zeromq.port);
 let topicMap = {};
 
-_.each(SWAGGER.sanitizedRoutes, function (route) {
+_.each(SWAGGER.sanitizedRoutes, function(route) {
   let namespaces = [route.method + ' -- ' + route.path];
 
   let controller;
@@ -70,7 +70,7 @@ _.each(SWAGGER.sanitizedRoutes, function (route) {
   let handler = function *() {
     if (route.authRequired) {
       console.log('AUTHENTICATE');
-      // let authenticated = yield auth;
+      // Let authenticated = yield auth;
       // if (!authenticated) return ctx.respond(401, 'Not Authenticated')
     }
 
@@ -96,23 +96,33 @@ let execFlow = function *(mWare, handler) {
   yield handler.call(ctx);
 };
 
-responder.on('message', function (message) {
-  let respond = function (msg, data) {
-    if (msg.id) data.id = msg.id;
-    data = JSON.stringify(data);
-    console.log('  --> ' + (msg.method || 'unkown method').toUpperCase() + ' ' + (msg.path || 'unknown path'));
+responder.on('message', function(message) {
+  let ctx = responseBinding({});
+  let respond = function(data) {
+    console.log(data);
+    if (data.status) {
+      ctx.body = data;
+    } else {
+      ctx.respond(data);
+    }
+
+    console.log(ctx.body);
+    ctx.body.id = ctx.id;
+    data = JSON.stringify(ctx.body);
+    console.log('  --> ' + (message.method || 'unkown method').toUpperCase() + ' ' + (message.path || 'unknown path'));
     responder.send(data);
   };
 
+
   try {
     message = JSON.parse(message.toString('utf8'));
+    ctx.id = message.id;
   } catch (e) {
     console.error('Failed to parse message. JSON may be malformed');
     console.error(e.stack);
-    return respond(message, {
+    return respond({
       status: 400,
-      success: false,
-      data: 'Could not parse request. Make sure JSON is valid'
+      data: 'Could not parse request. Make sure JSON is valid',
     });
   }
 
@@ -135,26 +145,18 @@ responder.on('message', function (message) {
       if (genit.isGenerator(handler)) {
         ctx = responseBinding(ctx);
 
-        // middleware
+        // Middleware
         yield execFlow.call(ctx, middleware, handler);
       }
 
-      if (!ctx.body) {
-        ctx.respond(404);
-      }
-
-      respond(message, ctx.body);
+      respond(ctx.body || 404);
 
     } catch (e) {
-      respond(message, {
-        status: 500,
-        success: false,
-        data: 'Internal server error'
-      });
+      respond(500);
       console.error(e.stack);
     }
 
-  }).catch(function (err) {
+  }).catch(function(err) {
     console.error('Something has gone terribly wrong:', err.stack);
   });
 });

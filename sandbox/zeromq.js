@@ -13,13 +13,13 @@ let client = micron({
     method: 'zeromq',
     prefix: 'v1',
     host: '127.0.0.1',
-    port: 1991
-  }
+    port: 5555,
+  },
 });
 
-let log = function () {
+let log = function() {
   let args = [];
-  _.each(arguments, function (arg, index) {
+  _.each(arguments, function(arg, index) {
     args.push (_.isObject(arg) ? JSON.stringify(arg, null, '  ') : arg);
   });
 
@@ -39,7 +39,7 @@ co(function *() {
     first_name: 'test',
     last_name: 'tester',
     email: 'test@tester.com',
-    password: 'Tester@1'
+    password: 'Tester@1',
   });
   log(result);
   if (result.status !== 201) toss('Failed to create user');
@@ -49,8 +49,8 @@ co(function *() {
 
   result = yield client.userService.get('user/{id}', {
     parameters: {
-      id: user.id
-    }
+      id: user.id,
+    },
   });
   log(result);
 
@@ -58,11 +58,11 @@ co(function *() {
 
   result = yield client.userService.put('user/{id}/update', {
     parameters: {
-      id: user.id
+      id: user.id,
     },
     body: {
-      last_name: 'Testington'
-    }
+      last_name: 'Testington',
+    },
   });
   log(result);
 
@@ -70,8 +70,8 @@ co(function *() {
 
   result = yield client.userService.delete('user/{id}/remove', {
     parameters: {
-      id: user.id
-    }
+      id: user.id,
+    },
   });
   log(result);
 
@@ -83,7 +83,7 @@ co(function *() {
 
   process.exit();
 
-}).catch(function (e) {
+}).catch(function(e) {
   console.error(e.stack);
   process.exit();
 });

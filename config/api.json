@@ -1,11 +1,11 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Hart Authentication Service",
-    "description": "I'm your Huckleberry, asdfasdfasfsadfads",
+    "title": "Micron",
+    "description": "Microservice on fleek",
     "version": "1.0.0"
   },
-  "host": "auth.hartsolution.com",
+  "host": "localhost:1991",
   "schemes": [
     "https"
   ],
@@ -17,159 +17,11 @@
     "application/json"
   ],
   "paths": {
-    "/status": {
-      "get": {
-        "description": "Get status",
-        "tags": [
-          "status"
-        ],
-        "responses": {
-          "200": {
-            "description": "User found",
-            "schema": {
-              "$ref": "#/definitions/BaseResponse"
-            }
-          },
-          "default": {
-            "description": "Unexpected error",
-            "schema": {
-              "$ref": "#/definitions/BaseResponse"
-            }
-          }
-        },
-        "parameters": [{
-          "name": "shallow",
-          "in": "query",
-          "description": "If true, do not request /status of dependencies",
-          "type": "boolean"
-        }]
-      }
-    },
-    "/user/create": {
-      "post": {
-        "description": "Create user",
-        "tags": [
-          "user"
-        ],
-        "responses": {
-          "200": {
-            "description": "User created",
-            "schema": {
-              "$ref": "#/definitions/BaseResponse"
-            }
-          },
-          "default": {
-            "description": "Unexpected error",
-            "schema": {
-              "$ref": "#/definitions/BaseResponse"
-            }
-          }
-        },
-        "parameters": [{
-          "name": "first_name",
-          "in": "body",
-          "description": "User first name",
-          "type": "string",
-          "required": true
-        }, {
-          "name": "last_name",
-          "in": "body",
-          "description": "User last name",
-          "type": "string",
-          "required": true
-        }, {
-          "name": "email",
-          "in": "body",
-          "description": "Account Email",
-          "type": "string",
-          "email": true,
-          "required": true
-        }, {
-          "name": "password",
-          "in": "body",
-          "description": "Account password",
-          "type": "string",
-          "required": true
-        }]
-      }
-    },
-    "/user/:id": {
-      "get": {
-        "description": "Get user",
-        "tags": [
-          "user"
-        ],
-        "responses": {
-          "200": {
-            "description": "User found",
-            "schema": {
-              "$ref": "#/definitions/BaseResponse"
-            }
-          },
-          "default": {
-            "description": "Unexpected error",
-            "schema": {
-              "$ref": "#/definitions/BaseResponse"
-            }
-          }
-        }
-      }
-    },
-    "/user/:id/update": {
-      "put": {
-        "description": "Update user",
-        "tags": [
-          "user"
-        ],
-        "responses": {
-          "200": {
-            "description": "USer updated",
-            "schema": {
-              "$ref": "#/definitions/BaseResponse"
-            }
-          },
-          "default": {
-            "description": "Unexpected error",
-            "schema": {
-              "$ref": "#/definitions/BaseResponse"
-            }
-          }
-        },
-        "parameters": [{
-          "name": "first_name",
-          "in": "body",
-          "description": "User first name",
-          "type": "string"
-        }, {
-          "name": "last_name",
-          "in": "body",
-          "description": "User last name",
-          "type": "string"
-        }]
-      }
-    },
-    "/user/:id/remove": {
-      "delete": {
-        "description": "Remove user",
-        "tags": [
-          "user"
-        ],
-        "responses": {
-          "200": {
-            "description": "User removed",
-            "schema": {
-              "$ref": "#/definitions/BaseResponse"
-            }
-          },
-          "default": {
-            "description": "Unexpected error",
-            "schema": {
-              "$ref": "#/definitions/BaseResponse"
-            }
-          }
-        }
-      }
-    }
+    "allOf": [{
+      "$ref": "api/status.json"
+    }, {
+      "$ref": "api/user.json"
+    }]
   },
   "definitions": {
     "BaseResponse": {
@@ -181,11 +33,12 @@
       ],
       "properties": {
         "success": {
+
           "type": "boolean",
           "default": false
         },
         "data": {
-          "type": "mixed"
+          "type": "object"
         },
         "status": {
           "type": "integer",
@@ -194,23 +47,93 @@
         }
       }
     },
-    "Success": {
-      "allOf": [
-        { "$ref": "#/definitions/BaseResponse" },
-        {
-          "properties": {
-            "success": {
-              "default": true
-            },
-            "data": {
-              "default": "OK"
-            },
-            "status": {
-              "default" : 200
-            }
+    "200": {
+      "allOf": [{
+        "$ref": "#/definitions/BaseResponse"
+      }, {
+        "properties": {
+          "success": {
+            "default": true
+          },
+          "data": {},
+          "status": {
+            "default": 200
           }
         }
-      ]
+      }]
+    },
+    "201": {
+      "allOf": [{
+        "$ref": "#/definitions/BaseResponse"
+      }, {
+        "properties": {
+          "success": {
+            "default": true
+          },
+          "data": {
+            "default": "Created"
+          },
+          "status": {
+            "default": 201
+          }
+        }
+      }]
+    },
+    "400": {
+      "allOf": [{
+        "$ref": "#/definitions/BaseResponse"
+      }, {
+        "properties": {
+          "data": {
+            "default": "Bad Request"
+          },
+          "status": {
+            "default": 400
+          }
+        }
+      }]
+    },
+    "401": {
+      "allOf": [{
+        "$ref": "#/definitions/BaseResponse"
+      }, {
+        "properties": {
+          "data": {
+            "default": "Unauthorized"
+          },
+          "status": {
+            "default": 401
+          }
+        }
+      }]
+    },
+    "404": {
+      "allOf": [{
+        "$ref": "#/definitions/BaseResponse"
+      }, {
+        "properties": {
+          "data": {
+            "default": "Not Found"
+          },
+          "status": {
+            "default": 404
+          }
+        }
+      }]
+    },
+    "500": {
+      "allOf": [{
+        "$ref": "#/definitions/BaseResponse"
+      }, {
+        "properties": {
+          "data": {
+            "default": "Internal Server Error"
+          },
+          "status": {
+            "default": 500
+          }
+        }
+      }]
     }
   }
 }
