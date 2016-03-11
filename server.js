@@ -37,8 +37,8 @@ if (fs.existsSync(ASCII_FILE)) {
 
 let logConf = CONFIG.internal.logging;
 let streams = [
-  { level: 'debug', src: true, stream: bformat({ outputMode: 'short' }, process.stdout) },
-  { level: 'error', src: true, stream: bformat({ outputMode: 'long' }, process.stderr) },
+  { level: 'debug', stream: bformat({ outputMode: 'short' }, process.stdout) },
+  { level: 'error', stream: bformat({ outputMode: 'long' }, process.stderr) },
 ];
 
 if (PROGRAM.syslog) streams.push({ level: 'debug', type: 'raw', stream: bsyslog.createBunyanStream(CONFIG.resources.syslog), });
