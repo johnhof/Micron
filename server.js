@@ -65,7 +65,7 @@ _.each(CONFIG.serve, (service, index) => {
 
   // Spawn process
   let command = PROGRAM.appendParams([servicePath]);
-  let logger = log.child({ widget_type: service });
+  let logger = log.child({ service: service });
   let proc = spawn('node', command);
   proc.stdout.on('data', (data) => { logger.info(data.toString()); });
   proc.stderr.on('data', (data) => { logger.error(data.toString()); });
