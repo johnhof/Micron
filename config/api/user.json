@@ -1,0 +1,119 @@
+{
+  "/user/create": {
+    "post": {
+      "description": "Create user",
+      "tags": [
+        "user"
+      ],
+      "responses": {
+        "200": {
+          "schema": {
+            "$ref": "#/definitions/200"
+          }
+        },
+        "500": {
+          "schema": {
+            "$ref": "#/definitions/500"
+          }
+        },
+        "parameters": [{
+          "name": "first_name",
+          "in": "body",
+          "description": "User first name",
+          "type": "string",
+          "required": true
+        }, {
+          "name": "last_name",
+          "in": "body",
+          "description": "User last name",
+          "type": "string",
+          "required": true
+        }, {
+          "name": "email",
+          "in": "body",
+          "description": "Account Email",
+          "type": "string",
+          "email": true,
+          "required": true
+        }, {
+          "name": "password",
+          "in": "body",
+          "description": "Account password",
+          "type": "string",
+          "required": true
+        }]
+      }
+    }
+  },
+  "/user/:id": {
+    "get": {
+      "description": "Get user",
+      "tags": [
+        "user"
+      ],
+      "responses": {
+        "200": {
+          "schema": {
+            "$ref": "#/definitions/200"
+          }
+        }
+      },
+      "500": {
+        "schema": {
+          "$ref": "#/definitions/500"
+        }
+      }
+    }
+  },
+  "/user/:id/update": {
+    "put": {
+      "description": "Update user",
+      "tags": [
+        "user"
+      ],
+      "responses": {
+        "200": {
+          "schema": {
+            "$ref": "#/definitions/200"
+          }
+        },
+        "500": {
+          "schema": {
+            "$ref": "#/definitions/500"
+          }
+        },
+        "parameters": [{
+          "name": "first_name",
+          "in": "body",
+          "description": "User first name",
+          "type": "string"
+        }, {
+          "name": "last_name",
+          "in": "body",
+          "description": "User last name",
+          "type": "string"
+        }]
+      }
+    }
+  },
+  "/user/:id/remove": {
+    "delete": {
+      "description": "Remove user",
+      "tags": [
+        "user"
+      ],
+      "responses": {
+        "200": {
+          "schema": {
+            "$ref": "#/definitions/200"
+          }
+        }
+      },
+      "500": {
+        "schema": {
+          "$ref": "#/definitions/500"
+        }
+      }
+    }
+  }
+}
