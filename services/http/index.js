@@ -34,7 +34,7 @@ app.use(lusca(CONFIG.lusca));
 app.use(waterline);
 
 // micron
-app.use(micron.middleware.koa(CONFIG('services')));
+app.use(micron.middleware.koa(CONFIG.services));
 
 fleek(app, {
   controllers: root + '/controllers',
