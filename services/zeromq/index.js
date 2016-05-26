@@ -18,7 +18,7 @@ let toss = helpers.toss;
 
 const PROGRAM = require('../../lib/commander');
 const CONFIG = require('config');
-const SWAGGER = swaggerParser.parse('../config/api.json');
+const SWAGGER = swaggerParser.parse(__dirname + '/../../config/api.json');
 
 // Set up middleware exec order
 let middleware = [
