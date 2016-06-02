@@ -4,7 +4,7 @@
     "motd": {
       "color": 53,
       "text": ["Turtles all the way down", "Bro, do you even scale?"],
-      "ascii": "./services/ascii.txt"
+      "ascii": "./ascii.txt"
     },
     "logging": {
       "src": true,

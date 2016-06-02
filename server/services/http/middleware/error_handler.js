@@ -1,7 +1,7 @@
 'use strict';
 
 let _ = require('lodash');
-let responseBinding = require('../../../lib/response_binding');
+let responseBinding = require('../../../../lib/response_binding');
 
 // Constants
 const ERROR = {

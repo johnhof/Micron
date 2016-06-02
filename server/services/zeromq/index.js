@@ -7,22 +7,22 @@ let _ = require('lodash');
 let genit = require('genit');
 let root = require('app-root-path');
 let uuid = require('uuid');
-let responseBinding = require('../../lib/response_binding');
-let helpers = require('../../lib/helpers');
 let co = require('co');
 let path = require('path');
 let micron = require('micron-client');
+let responseBinding = require('../../../lib/response_binding');
+let helpers = require('../../../lib/helpers');
 
 let templateTracer = helpers.templateTracer;
 let toss = helpers.toss;
 
-const PROGRAM = require('../../lib/commander');
+const PROGRAM = require('../../../lib/commander');
 const CONFIG = require('config');
-const SWAGGER = swaggerParser.parse(__dirname + '/../../config/api.json');
+const SWAGGER = swaggerParser.parse(__dirname + '/../../../config/api.json');
 
 // Set up middleware exec order
 let middleware = [
-  require('../../lib/middleware/waterline'),
+  require('../../../lib/middleware/waterline'),
   micron.middleware.koa(CONFIG('services')),
 ];
 
