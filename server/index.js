@@ -10,20 +10,20 @@ let bunyan = require('bunyan');
 let bsyslog = require('bunyan-syslog');
 let bformat = require('bunyan-format');
 let path = require('path');
-let mixins = require('./lib/mixins');
+let mixins = require('../lib/mixins');
 
 //
 // Configs
 //
 
-const PROGRAM = require('./lib/commander');
+const PROGRAM = require('../lib/commander');
 const CONFIG = require('config');
 
 //
 // All important ascii art
 //
 
-const ASCII_FILE = CONFIG.find('internal.motd.ascii');
+const ASCII_FILE = path.resolve(__dirname + '/' + CONFIG.find('internal.motd.ascii'));
 if (fs.existsSync(ASCII_FILE)) {
   const TEXT_OPTS = CONFIG.find('internal.motd.text') || [];
   const COLOR = CONFIG.find('internal.motd.color') || 80;

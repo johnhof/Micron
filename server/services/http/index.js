@@ -10,11 +10,13 @@ let uuid =  require('uuid');
 let parser = require('koa-bodyparser');
 let micron = require('micron-client');
 
-let waterline = require('../../lib/middleware/waterline');
+let waterline = require('../../../lib/middleware/waterline');
 let logger = require('./middleware/logger');
 let errorHandler = require('./middleware/error_handler');
 
-const PROGRAM = require('../../lib/commander');
+let statusCtrl = require('../../../controllers/status');
+
+const PROGRAM = require('../../../lib/commander');
 const CONFIG = require('config');
 
 let app = koa();
@@ -35,6 +37,14 @@ app.use(waterline);
 
 // micron
 app.use(micron.middleware.koa(CONFIG.services));
+
+app.use(function *(next) {
+  if (this.path === '/status') {
+    yield statusCtrl.get.call(this);
+  } else {
+    yield next;
+  }
+});
 
 fleek(app, {
   controllers: root + '/controllers',
