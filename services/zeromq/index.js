@@ -62,10 +62,26 @@ _.each(SWAGGER.sanitizedRoutes, function(route) {
     namespaces.push(CRUD_MAP[route.method] + ' -- ' + route.path);
   }
 
-  if (!genit.isGenerator(coreHandler)) {
-    console.error('Handler must be a generator : ' + route.method + ' ' + route.controller);
-    return;
-  }
+    /* Adding in execution path to config */
+    if (route.details && _.isString(route.details.operationId)) {
+      let operationId = route.details.operationId;
+      let operationIdCtrl = controller[operationId];
+      if (!genit.isGenerator(operationIdCtrl)) {
+        console.error(`\nInvalid controller. The operationId *${operationId}* in *${route.controller}* controller is not a generator\n`);
+        console.log(`Fallback to default ${route.method.toUpperCase()} handler\n`);
+        coreHandler = controller[route.method];
+      } else {
+        coreHandler = controller[operationId];
+      }
+    } else { // Default to POST, GET, PUT, DELETE if no operationId specify
+      coreHandler = controller[route.method];
+    }
+
+
+    if (!genit.isGenerator(coreHandler)) {
+      console.error('Handler must be a generator : ' + route.method + ' ' + route.controller);
+      return;
+    }
 
   let handler = function *() {
     if (route.authRequired) {
