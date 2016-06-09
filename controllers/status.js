@@ -63,7 +63,7 @@ let probe = function (config) {
 
     return {
       host: host ? host : null,
-      alive: (!!result) || null
+      alive: (!!result) || false
     };
   });
 };
@@ -74,7 +74,7 @@ probe.all = (set) => {
       let probeResult = yield probe(config) || {};
       return {
         name: name || '',
-        alive: (probeResult && probeResult.alive) ? probeResult.alive : null
+        alive: (probeResult && probeResult.alive) ? probeResult.alive : false
       };
     });
   }));
@@ -98,7 +98,7 @@ module.exports.get = function *() {
       response.services = _.map(services, (content, name) => {
         return {
           name: name || '',
-          alive: ( !!(content && content.status) || null)
+          alive: ( !!(content && content.status) || false)
         }
       }) || [];
     }
