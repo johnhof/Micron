@@ -1,21 +1,60 @@
 'use strict';
 
+
+let _       = require('lodash');
+let net     = require('net');
+let comise  = require('comise');
 let request = require('request-promise');
-let _ = require('lodash');
-let comise = require('comise');
 
-const PROTOCOL = 'http://';
-const CONFIG = require('config');
+const PREFIX           = '://';
+const TIMEOUT          = 20000;
+const PROTOCOL_DEFAULT = 'http';
+const CONFIG           = require('config');
 
+let tcp_check = (address, port) => {
+  return new Promise( (resolve, reject) => {
+    var client = new net.Socket();
+    client.connect({address: address, port: port}, () => {
+      resolve(true);
+    });
+
+    client.on('error', (err) => {
+      if (err.code == "ENOTFOUND") {
+         console.error("[ERROR] No client found at this address!");
+         client.clientSocket.destroy();
+         return resolve(false);
+       } else if (err.code == "ECONNREFUSED") {
+         console.error("[ERROR] Connection refused! Please check the IP.");
+         client.clientSocket.destroy();
+         return resolve(false);
+       } else {
+         console.error('[ERROR] ' + err.code);
+         client.clientSocket.destroy();
+         return resolve(false);
+       }
+    });
+  };
+};
 
 let probe = function (config) {
   return comise(function *(){
-    let host = config.host ? config.host : null;
+    let host     = config.host ? config.host : null;
+    let protocol = config.protocol ? config.protocol : (PROTOCOL_DEFAULT);
+    let port     = config.port ? config.port : ( ( (protocol == 'https') ? 443 : 80) || 80);
     let result;
     if (!host) return { error: 'Probe failed' };
-    if (config.port) host = host + ':' + config.port;
     try {
-      result = host ? yield request({ timeout: 20000, uri: PROTOCOL + host, method:'get'}) : null;
+      switch (protocol) {
+        case 'http':
+          result = host ? yield request({ timeout: TIMEOUT, uri: (protocol + PREFIX + host), method:'get'}) : null;
+        break;
+        case 'https':
+          result = host ? yield request({ timeout: TIMEOUT, uri: (protocol + PREFIX + host), method:'get'}) : null;
+        break;
+        case 'tcp':
+          result = host ? yield tcp_check(host, port) : null;
+        break;
+      }
     } catch (e) {
       if (!/parse\s+error/i.test(e.stack)) console.log(e.name + ': ' + e.message);
       let eIs = (str) => e.stack.indexOf(str) === -1;
@@ -50,11 +89,11 @@ module.exports.get = function *() {
     resources: [],
     services: []
   };
-  
+
   try {
     // get the status of other micron services
     if (!ctx.request.query.shallow) {
-  
+
       let services = yield ctx.micron.status();
       response.services = _.map(services, (content, name) => {
         return {
@@ -63,7 +102,7 @@ module.exports.get = function *() {
         }
       }) || [];
     }
-  
+
     response.resources = yield probe.all(CONFIG.resources) || [];
 
   } catch (err) {

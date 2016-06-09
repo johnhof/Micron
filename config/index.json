@@ -41,18 +41,21 @@
   },
   "resources": {
     "couch": {
+      "protocol": "http",
       "adapter": "couch",
       "host": "localhost",
       "port": "5984",
       "username": ""
     },
     "zeromq": {
+      "protocol": "tcp",
       "host": "127.0.0.1",
       "port": 5555
     },
     "syslog": {
       "type": "sys",
       "facility": 16,
+      "protocol": "tcp",
       "host": "127.0.0.1",
       "port": 514
     }
