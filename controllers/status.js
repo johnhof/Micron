@@ -1,10 +1,11 @@
 'use strict';
 
 
-let _       = require('lodash');
-let net     = require('net');
-let comise  = require('comise');
+let _ = require('lodash');
+let net = require('net');
+let comise = require('comise');
 let request = require('request-promise');
+let URL = require('url');
 
 const PREFIX           = '://';
 const TIMEOUT          = 20000;
@@ -21,15 +22,15 @@ let tcp_check = (address, port) => {
     client.on('error', (err) => {
       if (err.code == "ENOTFOUND") {
          console.error("[ERROR] No client found at this address!");
-         client.clientSocket.destroy();
+         if (client.clientSocket) client.clientSocket.destroy();
          return resolve(false);
        } else if (err.code == "ECONNREFUSED") {
          console.error("[ERROR] Connection refused! Please check the IP.");
-         client.clientSocket.destroy();
+         if (client.clientSocket) client.clientSocket.destroy();
          return resolve(false);
        } else {
          console.error('[ERROR] ' + err.code);
-         client.clientSocket.destroy();
+         if (client.clientSocket) client.clientSocket.destroy();
          return resolve(false);
        }
     });
@@ -38,21 +39,23 @@ let tcp_check = (address, port) => {
 
 let probe = function (config) {
   return comise(function *(){
-    let host     = config.host ? config.host : null;
-    let protocol = config.protocol ? config.protocol : (PROTOCOL_DEFAULT);
-    let port     = config.port ? config.port : ( ( (protocol == 'https') ? 443 : 80) || 80);
+    if (!config.host) return { error: 'Probe failed' };
+
+    let defaultPort = ((config.protocol || '') == 'https') ? 443 : 80;
+    let url = {
+      host: config.host,
+      protocol: config.protocol || (PROTOCOL_DEFAULT),
+      port: config.port || defaultPort
+    };
     let result;
-    if (!host) return { error: 'Probe failed' };
     try {
-      switch (protocol) {
+      switch (url.protocol) {
         case 'http':
-          result = host ? yield request({ timeout: TIMEOUT, uri: (protocol + PREFIX + host), method:'get'}) : null;
-        break;
         case 'https':
-          result = host ? yield request({ timeout: TIMEOUT, uri: (protocol + PREFIX + host), method:'get'}) : null;
+          result = yield request({ timeout: TIMEOUT, uri: URL.format(url), method:'get'});
         break;
         case 'tcp':
-          result = host ? yield tcp_check(host, port) : null;
+          result = yield tcp_check(url.host, url.port);
         break;
       }
     } catch (e) {
@@ -62,8 +65,8 @@ let probe = function (config) {
     }
 
     return {
-      host: host ? host : null,
-      alive: (!!result) || false
+      host: config.host || false,
+      alive: (!!result)
     };
   });
 };
