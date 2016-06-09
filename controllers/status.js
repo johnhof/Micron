@@ -43,7 +43,7 @@ let probe = function (config) {
 
     let defaultPort = ((config.protocol || '') == 'https') ? 443 : 80;
     let url = {
-      host: config.host,
+      hostname: config.host,
       protocol: config.protocol || (PROTOCOL_DEFAULT),
       port: config.port || defaultPort
     };
@@ -55,7 +55,7 @@ let probe = function (config) {
           result = yield request({ timeout: TIMEOUT, uri: URL.format(url), method:'get'});
         break;
         case 'tcp':
-          result = yield tcp_check(url.host, url.port);
+          result = yield tcp_check(config.host, url.port);
         break;
       }
     } catch (e) {
