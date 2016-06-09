@@ -33,7 +33,7 @@ let tcp_check = (address, port) => {
          return resolve(false);
        }
     });
-  };
+  });
 };
 
 let probe = function (config) {
