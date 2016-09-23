@@ -20,28 +20,28 @@ let tcp_check = (address, port) => {
     });
 
     client.on('error', (err) => {
-      if (err.code == "ENOTFOUND") {
-         console.error("[ERROR] No client found at this address!");
-         if (client.clientSocket) client.clientSocket.destroy();
-         return resolve(false);
-       } else if (err.code == "ECONNREFUSED") {
-         console.error("[ERROR] Connection refused! Please check the IP.");
-         if (client.clientSocket) client.clientSocket.destroy();
-         return resolve(false);
-       } else {
-         console.error('[ERROR] ' + err.code);
-         if (client.clientSocket) client.clientSocket.destroy();
-         return resolve(false);
-       }
+      if (err.code == 'ENOTFOUND') {
+        console.error('[ERROR] No client found at this address!');
+        if (client.clientSocket) client.clientSocket.destroy();
+        return resolve(false);
+      } else if (err.code == 'ECONNREFUSED') {
+        console.error('[ERROR] Connection refused! Please check the IP.');
+        if (client.clientSocket) client.clientSocket.destroy();
+        return resolve(false);
+      } else {
+        console.error('[ERROR] ' + err.code);
+        if (client.clientSocket) client.clientSocket.destroy();
+        return resolve(false);
+      }
     });
   });
 };
 
 let probe = function (config) {
-  return comise(function *(){
+  return comise(function *() {
     if (!config.host) return { error: 'Probe failed' };
 
-    let defaultPort = ((config.protocol || '') == 'https') ? 443 : 80;
+    let defaultPort = ( (config.protocol || '') == 'https') ? 443 : 80;
     let url = {
       hostname: config.host,
       protocol: config.protocol || (PROTOCOL_DEFAULT),
@@ -73,7 +73,7 @@ let probe = function (config) {
 
 probe.all = (set) => {
   return Promise.all(_.map(set, (config, name) => {
-    return comise(function *(){
+    return comise(function *() {
       let probeResult = yield probe(config) || {};
       return {
         name: name || '',
@@ -81,7 +81,7 @@ probe.all = (set) => {
       };
     });
   }));
-}
+};
 
 
 module.exports.get = function *() {
@@ -102,7 +102,7 @@ module.exports.get = function *() {
         return {
           name: name || '',
           alive: ( !!(content && content.status) || false)
-        }
+        };
       }) || [];
     }
 

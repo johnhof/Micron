@@ -14,7 +14,7 @@ let waterline = require('../../../lib/middleware/waterline');
 let logger = require('./middleware/logger');
 let errorHandler = require('./middleware/error_handler');
 
-let statusCtrl = require('../../../controllers/status');
+let prefixManager = require('./middleware/prefix_manager');
 
 const PROGRAM = require('../../../lib/commander');
 const CONFIG = require('config');
@@ -38,16 +38,13 @@ app.use(waterline);
 // micron
 app.use(micron.middleware.koa(CONFIG.services));
 
-app.use(function *(next) {
-  if (this.path === '/status') {
-    yield statusCtrl.get.call(this);
-  } else {
-    yield next;
-  }
-});
+
+prefixManager.bypass(app);
+prefixManager.normalize(app);
 
 fleek(app, {
-  controllers: root + '/controllers',
+  swagger: CONFIG.swaggerDoc,
+  controllers: '/../../../controllers',
   documentation: true,
   validate: {
     catch: function *(err) {
