@@ -153,7 +153,7 @@ responder.on('message', function(message) {
       ctx.request.method = message.method;
       ctx.request.path = message.path;
       ctx.request.query = message.query || message.qs || {};
-      ctx.request.body = message.form || {};
+      ctx.request.body = message.body || message.form || {};
       ctx.params = message.parameters;
 
       let template = traceTemplate(message.method, message.path.replace(SWAGGER.basePath, ''));
