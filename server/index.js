@@ -11,6 +11,7 @@ let bsyslog = require('bunyan-syslog');
 let bformat = require('bunyan-format');
 let path = require('path');
 let mixins = require('../lib/mixins');
+let stripAnsi = require('strip-ansi');
 
 //
 // Configs
@@ -37,13 +38,13 @@ if (fs.existsSync(ASCII_FILE)) {
 
 let logConf = CONFIG.internal.logging;
 let streams = [
-  { level: 'debug', stream: bformat({ outputMode: 'short' }, process.stdout) },
-  { level: 'error', stream: bformat({ outputMode: 'long' }, process.stderr) },
+  { level: 'debug', stream: bformat({ outputMode: 'short', color: !PROGRAM.no_color }, process.stdout) },
+  { level: 'error', stream: bformat({ outputMode: 'long', color: !PROGRAM.no_color}, process.stderr) },
 ];
 
 if (PROGRAM.syslog) streams.push({ level: 'debug', type: 'raw', stream: bsyslog.createBunyanStream(CONFIG.resources.syslog), });
 _.each(logConf.streams, (conf) => {
-  if (PROGRAM.preserveDisk && (conf.type === 'file' || conf.type === 'rotating-file' || conf.path)) return;
+  if (PROGRAM.preserve_disk && (conf.type === 'file' || conf.type === 'rotating-file' || conf.path)) return;
   mkdirp.sync(path.dirname(conf.path));
   streams.push(conf);
 });
@@ -67,6 +68,13 @@ _.each(CONFIG.serve, (service, index) => {
   let command = PROGRAM.appendParams([servicePath]);
   let logger = log.child({ service: service });
   let proc = spawn('node', command);
-  proc.stdout.on('data', (data) => { logger.info(data.toString()); });
-  proc.stderr.on('data', (data) => { logger.error(data.toString()); });
+
+  let streamHandler = function (type) {
+    return (data) => {
+      data = !PROGRAM.no_color ? data.toString("utf-8") : stripAnsi(data.toString("utf-8"));
+      logger[type](data);
+    }
+  }
+  proc.stdout.on('data', streamHandler('info'));
+  proc.stderr.on('data', streamHandler('error'));
 });
