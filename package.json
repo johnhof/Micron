@@ -1,6 +1,6 @@
 {
   "name": "micron",
-  "version": "1.6.3",
+  "version": "1.7.0",
   "description": "Micron microservice template",
   "main": "server.js",
   "scripts": {
@@ -31,8 +31,8 @@
     "comise": "^1.0.1",
     "commander": "^2.8.1",
     "config": "file:./lib/configurator",
-    "fleek-parser": "^1.0.0",
-    "fleek-router": "^1.0.0",
+    "fleek-parser": "^1.2.3",
+    "fleek-router": "^1.2.4",
     "genit": "^1.0.2",
     "koa": "^1.0.0",
     "koa-bodyparser": "^2.0.1",
@@ -41,7 +41,7 @@
     "koa-morgan": "^0.4.0",
     "koa-response-time": "^1.0.2",
     "koa-router": "^5.2.3",
-    "koa-waterline": "^2.0.1",
+    "koa-waterline": "^4.2.0",
     "lodash": "^3.10.1",
     "merge-defaults": "^0.2.1",
     "micron-client": "^3.0.0",
