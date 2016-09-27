@@ -1,6 +1,6 @@
 {
   "name": "micron",
-  "version": "1.6.3",
+  "version": "1.7.0",
   "description": "Micron microservice template",
   "main": "server.js",
   "scripts": {
