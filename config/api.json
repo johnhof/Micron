@@ -21,6 +21,8 @@
       "$ref": "api/status.json"
     }, {
       "$ref": "api/user.json"
+    }, {
+      "$ref": "api/version.json"
     }]
   },
   "definitions": {
