@@ -2,6 +2,7 @@
   "/user/create": {
     "post": {
       "description": "Create user",
+      "operationId": "createUser",
       "tags": [
         "user"
       ],
@@ -48,6 +49,7 @@
   "/user/:id": {
     "get": {
       "description": "Get user",
+      "operationId": "getUser",
       "tags": [
         "user"
       ],
@@ -68,6 +70,7 @@
   "/user/:id/update": {
     "put": {
       "description": "Update user",
+      "operationId": "updateUser",
       "tags": [
         "user"
       ],
@@ -99,6 +102,7 @@
   "/user/:id/remove": {
     "delete": {
       "description": "Remove user",
+      "operationId": "removeUser",
       "tags": [
         "user"
       ],

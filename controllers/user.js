@@ -2,7 +2,7 @@
 
 let thenify = require('thenify');
 
-module.exports.post = function *() {
+module.exports.createUser = function *() {
   let ctx = this;
   let body = ctx.request.body;
   let User = ctx.waterline.collections.user;
@@ -28,7 +28,7 @@ module.exports.post = function *() {
   }
 };
 
-module.exports.get = function *() {
+module.exports.getUser = function *() {
   let ctx = this;
   let user = yield ctx.waterline.collections.user.findOne({
     _id: ctx.params.id,
@@ -37,7 +37,7 @@ module.exports.get = function *() {
   if (user) return ctx.respond(user);
 };
 
-module.exports.put = function *() {
+module.exports.updateUser = function *() {
   let ctx = this;
   let body = ctx.request.body;
   let User = ctx.waterline.collections.user;
@@ -48,12 +48,12 @@ module.exports.put = function *() {
   if (body.last_name) update.last_name = body.last_name;
 
   if (user.id) {
-    user = yield thenify(User.merge)(user.id, update);
+    user = yield User.update(user.id, update);
     return ctx.respond(user);
   }
 };
 
-module.exports.delete = function *() {
+module.exports.removeUser = function *() {
   let ctx = this;
   let User = ctx.waterline.collections.user;
   let user = yield User.findOne({ _id: ctx.params.id });
