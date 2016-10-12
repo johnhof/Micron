@@ -1,0 +1,41 @@
+{
+  "/version": {
+    "get": {
+      "description": "Get version",
+      "tags": [
+        "version"
+      ],
+      "responses": {
+        "200": {
+          "schema": {
+            "allOf": [{
+              "$ref": "#/definitions/200"
+            }, {
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string"
+                    },
+                    "prefix": {
+                      "type": "string"
+                    },
+                    "semantic": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }]
+          }
+        },
+        "500": {
+          "schema": {
+            "$ref": "#/definitions/500"
+          }
+        }
+      }
+    }
+  }
+}
