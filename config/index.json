@@ -13,11 +13,11 @@
         "path": "./logs/out.log",
         "period": "1d",
         "count": 7
-        }]
+      }]
     },
-    "swagger" : {
-      "key"  :{
-        "name" : "key",
+    "swagger": {
+      "key": {
+        "name": "key",
         "value": "hart"
       }
     },
@@ -60,8 +60,9 @@
       "port": 514
     }
   },
-  "services":{
+  "services": {
     "dummy": {
+      "prefix": "/v2.0",
       "micron": "http",
       "host": "127.0.0.1",
       "port": 8111
