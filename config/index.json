@@ -1,5 +1,5 @@
 {
-  "serve": ["http", "zeromq"],
+  "serve": ["http"],
   "internal": {
     "motd": {
       "color": 53,
@@ -13,11 +13,11 @@
         "path": "./logs/out.log",
         "period": "1d",
         "count": 7
-        }]
+      }]
     },
-    "swagger" : {
-      "key"  :{
-        "name" : "key",
+    "swagger": {
+      "key": {
+        "name": "key",
         "value": "hart"
       }
     },
@@ -57,7 +57,7 @@
       "port": 514
     }
   },
-  "services":{
+  "services": {
     "dummy": {
       "micron": "http",
       "host": "127.0.0.1",

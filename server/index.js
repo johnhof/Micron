@@ -10,13 +10,13 @@ let bunyan = require('bunyan');
 let bsyslog = require('bunyan-syslog');
 let bformat = require('bunyan-format');
 let path = require('path');
-let mixins = require('./lib/mixins');
+let mixins = require('../lib/mixins');
 
 //
 // Configs
 //
 
-const PROGRAM = require('./lib/commander');
+const PROGRAM = require('../lib/commander');
 const CONFIG = require('config');
 
 //
