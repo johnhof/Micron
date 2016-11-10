@@ -1,38 +1,31 @@
 'use strict';
 
 let zeromatter = require('zeromatter');
-let swaggerParser = require('fleek-parser');
-let responseBinding = require('../../lib/response_binding');
-let helpers = require('../../lib/helpers');
 
-let templateTracer = helpers.templateTracer;
-let toss = helpers.toss;
+let log = require('../../../lib/log').init('zmq');
+let middleware = require('../../../lib/middleware');
+let validator = require('./middleware/validator');
 
-const PROGRAM = require('../../lib/commander');
-const _ = require('lodash');
-const PATH = require('path');
+const PROGRAM = require('../../../lib/commander');
 const CONFIG = require('config');
-const SWAGGER = swaggerParser.parse(__dirname + '/../../config/api.json');
-const CRUD_MAP = {
-  post: 'create',
-  get: 'read',
-  put: 'update',
-  delete: 'destroy',
-};
 
+let app = zeromatter(CONFIG.resources.zeromq);
 
-let traceTemplate = templateTracer(SWAGGER.paths);
-
-let app = zeromatter();
+app.use(function *(next) {
+  log.info('test: ', typeof next, next);
+  yield next()
+})
 
 // Fallback error handler
-app.use(errorHandler());
+app.use(middleware.promisified.errorHandler());
 
 // Validate incoming request
 app.use(validator());
 
 // Logger
-app.use(logger());
+app.use(middleware.logger());
 
+// app.use(middleware.contextBuilder());
 
 app.listen();
+log.info(`ZMQ service listening to: ${CONFIG.local.port}`);

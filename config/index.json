@@ -1,10 +1,10 @@
 {
-  "serve": ["http"],
+  "serve": ["http", "zeromq"],
   "internal": {
     "motd": {
       "color": 53,
       "text": ["Turtles all the way down", "Bro, do you even scale?"],
-      "ascii": "./services/ascii.txt"
+      "ascii": "./server/ascii.txt"
     },
     "logging": {
       "src": true,
