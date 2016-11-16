@@ -20,7 +20,7 @@
     "allOf": [{
       "$ref": "api/status.json"
     }, {
-      "$ref": "api/user.json"
+      "$ref": "api/foo.json"
     }]
   },
   "definitions": {

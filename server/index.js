@@ -7,8 +7,6 @@ let clc = require('cli-color');
 let spawn = require('child_process').spawn;
 let moment = require('moment');
 let bunyan = require('bunyan');
-let bsyslog = require('bunyan-syslog');
-let bformat = require('bunyan-format');
 let path = require('path');
 let mixins = require('../lib/mixins');
 
@@ -30,7 +28,6 @@ if (fs.existsSync(MOTD.ascii)) {
   console.log(colorize(fs.readFileSync(MOTD.ascii).toString()));
   console.log('  ' + colorize(text[Math.floor(Math.random() * text.length)]) + '\n');
 }
-
 
 //
 // Launch services

@@ -1,15 +1,10 @@
 'use strict';
 
-module.exports = (opts) => {
-  return function *(next) {
-    let data = this.data
-    let missing = [];
-    if (!data.method) missing.push('method');
-    if (!data.path) missing.push('path');
-    if (!missing.length) {
-      throw Error(`Request missing: [${missing.join(',')}]`);
-    } else {
-      yield next();
-    }
-  }
-};
+module.exports = (opts) => (ctx, next) => {
+  let data = ctx.data
+  let missing = [];
+  if (!data.method) missing.push('method');
+  if (!data.path) missing.push('path');
+  if (missing.length === 0) return next();
+  else return Promise.reject(`Request missing: [${missing.join(',')}]`);
+}

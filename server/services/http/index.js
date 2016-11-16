@@ -1,6 +1,7 @@
 'use strict';
-
-let koa = require('koa');
+;
+let Koa = require('koa');
+let convert = require('koa-convert');
 let clc = require('cli-color');
 let lusca = require('koa-lusca');
 let _ = require('lodash');
@@ -16,10 +17,10 @@ let middleware = require('../../../lib/middleware');
 const PROGRAM = require('../../../lib/commander');
 const CONFIG = require('config');
 
-let app = koa();
+let app = new Koa();
 
 // Parser
-app.use(parser());
+app.use(convert(parser()));
 
 // Request Logging
 app.use(middleware.logger());
@@ -31,23 +32,23 @@ app.use(middleware.responseBinder());
 app.use(middleware.errorHandler());
 
 // Application-Layer Security
-app.use(lusca(CONFIG.lusca));
+app.use(convert(lusca(CONFIG.lusca)));
 
 // Universal middleware
-app.use(middleware.waterline);
+app.use(middleware.waterline());
 
 // micron
-app.use(micron.middleware.koa(CONFIG.services));
+// app.use(micron.middleware.koa(CONFIG.services));
 
-fleek(app, {
-  controllers: root + '/controllers',
-  documentation: true,
-  validate: {
-    catch: function *(err) {
-      this.respond(400, err);
-    }
-  }
-});
+// fleek(app, {
+//   controllers: root + '/controllers',
+//   documentation: true,
+//   validate: {
+//     catch: function *(err) {
+//       this.respond(400, err);
+//     }
+//   }
+// });
 
 // Run Server
 app.listen(CONFIG.local.port);

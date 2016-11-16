@@ -2,7 +2,10 @@
 
 let zquest = require('zquest');
 
-zquest({data: 'test' }).then((r) => {
+zquest({data: {
+  method: 'GET',
+  path: '/'
+}}).then((r) => {
   console.log(r);
   process.exit();
 }).catch((e) => {

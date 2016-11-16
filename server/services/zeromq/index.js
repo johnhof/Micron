@@ -5,22 +5,24 @@ let zeromatter = require('zeromatter');
 let log = require('../../../lib/log').init('zmq');
 let middleware = require('../../../lib/middleware');
 let validator = require('./middleware/validator');
+let contextBuilder = require('./middleware/context_builder');
 
 const PROGRAM = require('../../../lib/commander');
 const CONFIG = require('config');
 
 let app = zeromatter(CONFIG.resources.zeromq);
 
-app.use(function *(next) {
-  log.info('test: ', typeof next, next);
-  yield next()
-})
+// Bind response logic
+app.use(middleware.responseBinder());
 
 // Fallback error handler
-app.use(middleware.promisified.errorHandler());
+app.use(middleware.errorHandler());
 
 // Validate incoming request
 app.use(validator());
+
+// contect builder
+app.use(contextBuilder());
 
 // Logger
 app.use(middleware.logger());
