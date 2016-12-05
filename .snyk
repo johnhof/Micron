@@ -1,0 +1,39 @@
+version: v1.5.2
+ignore: {}
+patch:
+  'npm:hawk:20160119':
+    - sails-couchdb-orm > nano > request > hawk:
+        patched: '2016-12-05T00:58:49.115Z'
+    - sails-couchdb-orm > nano > follow > request > hawk:
+        patched: '2016-12-05T00:58:49.115Z'
+  'npm:minimatch:20160620':
+    - fleek-router > fleek-response > mocha > glob > minimatch:
+        patched: '2016-12-05T00:58:49.115Z'
+  'npm:ms:20151024':
+    - fleek-router > fleek-response > mocha > debug > ms:
+        patched: '2016-12-05T00:58:49.115Z'
+  'npm:qs:20140806':
+    - sails-couchdb-orm > nano > request > qs:
+        patched: '2016-12-05T00:58:49.115Z'
+    - sails-couchdb-orm > nano > request > qs:
+        patched: '2016-12-05T00:58:49.115Z'
+    - sails-couchdb-orm > nano > follow > request > qs:
+        patched: '2016-12-05T00:58:49.115Z'
+    - sails-couchdb-orm > nano > follow > request > qs:
+        patched: '2016-12-05T00:58:49.115Z'
+  'npm:qs:20140806-1':
+    - sails-couchdb-orm > nano > request > qs:
+        patched: '2016-12-05T00:58:49.115Z'
+    - sails-couchdb-orm > nano > follow > request > qs:
+        patched: '2016-12-05T00:58:49.115Z'
+  'npm:request:20160119':
+    - sails-couchdb-orm > nano > follow > request:
+        patched: '2016-12-05T00:58:49.115Z'
+    - sails-couchdb-orm > nano > request:
+        patched: '2016-12-05T00:58:49.115Z'
+  'npm:uglify-js:20150824':
+    - sails-couchdb-orm > handlebars > uglify-js:
+        patched: '2016-12-05T00:58:49.115Z'
+  'npm:uglify-js:20151024':
+    - sails-couchdb-orm > handlebars > uglify-js:
+        patched: '2016-12-05T00:58:49.115Z'

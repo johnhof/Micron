@@ -5,7 +5,10 @@
   "main": "server.js",
   "scripts": {
     "test": "mocha ./tests/*",
-    "start": "node server --env dev"
+    "snyk-test": "snyk test",
+    "snyk-protect": "snyk protect",
+    "start": "node server --env dev",
+    "prepublish": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -46,6 +49,7 @@
     "merge-defaults": "^0.2.1",
     "micron-client": "^3.0.0",
     "mkdirp": "^0.5.1",
+    "snyk": "^1.21.2",
     "moment": "^2.10.6",
     "request-promise": "^3.0.0",
     "sails-couchdb-orm": "git+ssh://git@github.com:gohart/sails-couchdb-orm.git#master",
@@ -62,5 +66,6 @@
     "co-mocha": "^1.1.2",
     "co-request": "^1.0.0",
     "mocha": "^2.3.3"
-  }
+  },
+  "snyk": true
 }
