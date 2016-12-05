@@ -7,6 +7,9 @@ let middleware = require('../../../lib/middleware');
 let validator = require('./middleware/validator');
 let contextBuilder = require('./middleware/context_builder');
 
+let fleek = {
+  context: require('fleek-context')
+};
 const PROGRAM = require('../../../lib/commander');
 const CONFIG = require('config');
 
@@ -27,7 +30,16 @@ app.use(contextBuilder());
 // Logger
 app.use(middleware.logger());
 
-// app.use(middleware.contextBuilder());
+// Universal middleware
+app.use(middleware.waterline());
+
+// Fleek context
+app.use(fleek.context(CONFIG.swagger));
+
+app.use((ctx, next) => {
+  ctx.respond('TEST');
+  return next();
+});
 
 app.listen();
 log.info(`ZMQ service listening to: ${CONFIG.local.port}`);

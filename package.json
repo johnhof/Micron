@@ -32,6 +32,7 @@
     "comise": "^1.0.1",
     "commander": "^2.8.1",
     "config": "file:./lib/configurator",
+    "fleek-context": "^1.0.0",
     "fleek-parser": "^1.2.4",
     "fleek-router": "^1.2.5",
     "genit": "^1.0.2",
