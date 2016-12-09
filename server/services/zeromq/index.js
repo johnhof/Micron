@@ -48,6 +48,8 @@ app.use(fleek.validator().catch((ctx) => {
 }));
 
 app.use((ctx, next) => {
+  if (ctx.fleek.context) ctx.respond('TEST');
+  else ctx.respond(404, {});
   return next();
 });
 

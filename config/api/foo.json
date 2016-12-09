@@ -1,4 +1,31 @@
 {
+  "/foo/:id": {
+    "get": {
+      "description": "Get foo",
+      "tags": [
+        "foo"
+      ],
+      "parameters": [{
+        "name": "id",
+        "in": "path",
+        "description": "ID of the foo",
+        "type": "integer",
+        "required": true
+      }],
+      "responses": {
+        "200": {
+          "schema": {
+            "$ref": "#/definitions/200"
+          }
+        },
+        "500": {
+          "schema": {
+            "$ref": "#/definitions/500"
+          }
+        }
+      }
+    }
+  },
   "/foo/create": {
     "post": {
       "description": "Create foo",
@@ -41,26 +68,6 @@
           "schema": {
             "$ref": "#/definitions/500"
           }
-        }
-      }
-    }
-  },
-  "/foo/:id": {
-    "get": {
-      "description": "Get foo",
-      "tags": [
-        "foo"
-      ],
-      "responses": {
-        "200": {
-          "schema": {
-            "$ref": "#/definitions/200"
-          }
-        }
-      },
-      "500": {
-        "schema": {
-          "$ref": "#/definitions/500"
         }
       }
     }
