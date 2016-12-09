@@ -52,7 +52,6 @@ app.use(fleek.validator().catch((ctx) => {
 }));
 
 app.use((ctx, next) => {
-  console.log(ctx.fleek.validation)
   ctx.respond('TEST');
   return next();
 });

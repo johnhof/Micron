@@ -48,7 +48,6 @@ app.use(fleek.validator().catch((ctx) => {
 }));
 
 app.use((ctx, next) => {
-  ctx.respond('TEST');
   return next();
 });
 
