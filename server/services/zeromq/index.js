@@ -2,14 +2,17 @@
 
 let zeromatter = require('zeromatter');
 
-let log = require('../../../lib/log').init('zmq');
-let middleware = require('../../../lib/middleware');
 let validator = require('./middleware/validator');
 let contextBuilder = require('./middleware/context_builder');
 
+let log = require('../../../lib/log').init('zmq');
+let middleware = require('../../../lib/middleware');
+
 let fleek = {
-  context: require('fleek-context')
+  context: require('fleek-context'),
+  validator: require('fleek-validator')
 };
+
 const PROGRAM = require('../../../lib/commander');
 const CONFIG = require('config');
 
@@ -35,6 +38,14 @@ app.use(middleware.waterline());
 
 // Fleek context
 app.use(fleek.context(CONFIG.swagger));
+
+app.use(fleek.validator().catch((ctx) => {
+  ctx.respond(400, {
+    message: 'Validation failed',
+    errors: ctx.fleek.validation.errors
+  });
+  return Promise.resolve();
+}));
 
 app.use((ctx, next) => {
   ctx.respond('TEST');

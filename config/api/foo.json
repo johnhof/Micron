@@ -5,6 +5,32 @@
       "tags": [
         "foo"
       ],
+      "parameters": [{
+        "name": "first_name",
+        "in": "body",
+        "description": "User first name",
+        "type": "string",
+        "required": true
+      }, {
+        "name": "last_name",
+        "in": "body",
+        "description": "User last name",
+        "type": "string",
+        "required": true
+      }, {
+        "name": "email",
+        "in": "body",
+        "description": "Account Email",
+        "type": "string",
+        "email": true,
+        "required": true
+      }, {
+        "name": "password",
+        "in": "body",
+        "description": "Account password",
+        "type": "string",
+        "required": true
+      }],
       "responses": {
         "200": {
           "schema": {
@@ -15,33 +41,7 @@
           "schema": {
             "$ref": "#/definitions/500"
           }
-        },
-        "parameters": [{
-          "name": "first_name",
-          "in": "body",
-          "description": "User first name",
-          "type": "string",
-          "required": true
-        }, {
-          "name": "last_name",
-          "in": "body",
-          "description": "User last name",
-          "type": "string",
-          "required": true
-        }, {
-          "name": "email",
-          "in": "body",
-          "description": "Account Email",
-          "type": "string",
-          "email": true,
-          "required": true
-        }, {
-          "name": "password",
-          "in": "body",
-          "description": "Account password",
-          "type": "string",
-          "required": true
-        }]
+        }
       }
     }
   },

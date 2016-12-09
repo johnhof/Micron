@@ -1,22 +1,19 @@
 'use strict';
-;
+
 let Koa = require('koa');
+
 let convert = require('koa-convert');
-let clc = require('cli-color');
 let lusca = require('koa-lusca');
-let _ = require('lodash');
-let fleekRouter = require('fleek-router');
-let root = require('app-root-path');
-let uuid =  require('uuid');
 let parser = require('koa-bodyparser');
 let micron = require('micron-client');
 
-let fleek = {
-  context: require('fleek-context')
-};
-
 let log = require('../../../lib/log').init('http');
 let middleware = require('../../../lib/middleware');
+
+let fleek = {
+  context: require('fleek-context'),
+  validator: require('fleek-validator')
+};
 
 const PROGRAM = require('../../../lib/commander');
 const CONFIG = require('config');
@@ -46,20 +43,19 @@ app.use(middleware.waterline());
 
 app.use(fleek.context(CONFIG.swagger));
 
+app.use(fleek.validator().catch((ctx) => {
+  ctx.respond(400, {
+    message: 'Validation failed',
+    errors: ctx.fleek.validation.errors
+  });
+  return Promise.resolve();
+}));
+
 app.use((ctx, next) => {
+  console.log(ctx.fleek.validation)
   ctx.respond('TEST');
   return next();
 });
-
-// fleek(app, {
-//   controllers: root + '/controllers',
-//   documentation: true,
-//   validate: {
-//     catch: function *(err) {
-//       this.respond(400, err);
-//     }
-//   }
-// });
 
 // Run Server
 app.listen(CONFIG.local.port);
