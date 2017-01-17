@@ -10,10 +10,7 @@ let micron = require('micron-client');
 let log = require('../../../lib/log').init('http');
 let middleware = require('../../../lib/middleware');
 
-let fleek = {
-  context: require('fleek-context'),
-  validator: require('fleek-validator')
-};
+let fleek = require('fleek');
 
 const PROGRAM = require('../../../lib/commander');
 const CONFIG = require('config');
@@ -51,11 +48,7 @@ app.use(fleek.validator().catch((ctx) => {
   return Promise.resolve();
 }));
 
-app.use((ctx, next) => {
-  if (ctx.fleek.context) ctx.respond('TEST');
-  else ctx.respond(404, {});
-  return next();
-});
+app.use(fleek.router.controllers(`${__dirname}/../../../controllers`));
 
 // Run Server
 app.listen(CONFIG.local.port);

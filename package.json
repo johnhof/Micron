@@ -32,9 +32,7 @@
     "comise": "^1.0.1",
     "commander": "^2.8.1",
     "config": "file:./lib/configurator",
-    "fleek-context": "^1.0.0",
-    "fleek-parser": "^1.2.4",
-    "fleek-router": "^1.2.5",
+    "fleek": "^2.0.0",
     "genit": "^1.0.2",
     "koa": "^2.0.0",
     "koa-bodyparser": "^2.0.1",
@@ -55,15 +53,11 @@
     "string-template": "^0.2.1",
     "thenify": "^3.1.0",
     "uuid": "^2.0.1",
-    "winston": "^1.0.2",
     "zeromatter": "^1.0.2",
-    "zmq": "^2.13.0",
     "zquest": "^1.1.2"
   },
   "devDependencies": {
     "chai": "^3.3.0",
-    "co-mocha": "^1.1.2",
-    "co-request": "^1.0.0",
     "mocha": "^2.3.3"
   }
 }
