@@ -2,30 +2,26 @@
 
 let _ = require('lodash');
 let fs = require('fs');
-let mkdirp = require('mkdirp');
-let clc = require('cli-color');
+let chalk = require('chalk');
 let spawn = require('child_process').spawn;
-let moment = require('moment');
-let bunyan = require('bunyan');
 let path = require('path');
-let mixins = require('../lib/mixins');
+let log = require('../lib/log');
 
 //
 // Configs
 //
 
 const PROGRAM = require('../lib/commander');
-const CONFIG = require('config');
+const VAR = process.env;
 
 //
 // All important ascii art
 //
 
-const MOTD = CONFIG.find('internal.motd');
-if (fs.existsSync(MOTD.ascii)) {
-  let text = MOTD.text || [];
-  let colorize = CONFIG.local.isDev ? clc.xterm(MOTD.color || 80) : (s)=>s;
-  console.log(colorize(fs.readFileSync(MOTD.ascii).toString()));
+if ((VAR.ENVIRONMENT === 'development') && fs.existsSync(VAR.MICRON_MOTD_ASCII)) {
+  let text = (VAR.MICRON_MOTD_TEXT || '').split('::');
+  let colorize = chalk[VAR.MICRON_MOTD_COLOR] || ((s)=>s);
+  console.log(colorize(fs.readFileSync(VAR.MICRON_MOTD_ASCII).toString()));
   console.log('  ' + colorize(text[Math.floor(Math.random() * text.length)]) + '\n');
 }
 
@@ -34,7 +30,7 @@ if (fs.existsSync(MOTD.ascii)) {
 //
 
 let procs = [];
-_.each(CONFIG.serve, (service, index) => {
+_.each(VAR.MICRON_SERVICES.split(','), (service, index) => {
   // Find service
   let servicePath = path.join(__dirname, './services/' + service);
   if (!fs.existsSync(servicePath)) {
@@ -42,7 +38,7 @@ _.each(CONFIG.serve, (service, index) => {
     log.error(error);
     throw error;
   }
-
+  
   // Spawn process
   let command = PROGRAM.appendParams([servicePath]);
   let proc = spawn('node', command, { stdio: 'inherit' });

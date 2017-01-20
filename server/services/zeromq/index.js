@@ -11,9 +11,8 @@ let middleware = require('../../../lib/middleware');
 let fleek = require('fleek');
 
 const PROGRAM = require('../../../lib/commander');
-const CONFIG = require('config');
 
-let app = zeromatter(CONFIG.resources.zeromq);
+let app = zeromatter(process.env.MICRON_SERVICE_ZMQ_PORT);
 
 // Bind response logic
 app.use(middleware.responseBinder());
@@ -30,11 +29,8 @@ app.use(contextBuilder());
 // Logger
 app.use(middleware.logger());
 
-// Universal middleware
-app.use(middleware.waterline());
-
 // Fleek context
-app.use(fleek.context(CONFIG.swagger));
+app.use(fleek.context(fleek.parser.parse(`${__dirname}/../../../config/api.json`)));
 
 app.use(fleek.validator().catch((ctx) => {
   ctx.respond(400, {
@@ -46,5 +42,6 @@ app.use(fleek.validator().catch((ctx) => {
 
 app.use(fleek.router.controllers(`${__dirname}/../../../controllers`));
 
-app.listen();
-log.info(`ZMQ service listening to: ${CONFIG.local.port}`);
+// Run Server
+app.listen(process.env.MICRON_SERVICE_ZMQ_PORT);
+log.info(`ZMQ service listening to: ${process.env.MICRON_SERVICE_ZMQ_PORT}`);

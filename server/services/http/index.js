@@ -3,9 +3,8 @@
 let Koa = require('koa');
 
 let convert = require('koa-convert');
-let lusca = require('koa-lusca');
-let parser = require('koa-bodyparser');
 let micron = require('micron-client');
+let parser = require('koa-bodyparser');
 
 let log = require('../../../lib/log').init('http');
 let middleware = require('../../../lib/middleware');
@@ -13,7 +12,6 @@ let middleware = require('../../../lib/middleware');
 let fleek = require('fleek');
 
 const PROGRAM = require('../../../lib/commander');
-const CONFIG = require('config');
 
 let app = new Koa();
 
@@ -29,16 +27,9 @@ app.use(middleware.responseBinder());
 // Error handling
 app.use(middleware.errorHandler());
 
-// Application-Layer Security
-app.use(convert(lusca(CONFIG.lusca)));
-
-// Universal middleware
-app.use(middleware.waterline());
-
 // micron
-// app.use(micron.middleware.koa(CONFIG.services));
-
-app.use(fleek.context(CONFIG.swagger));
+// app.use(micron.middleware.koa(process.env..services));
+app.use(fleek.context(fleek.parser.parse(`${__dirname}/../../../config/api.json`)));
 
 app.use(fleek.validator().catch((ctx) => {
   ctx.respond(400, {
@@ -51,5 +42,5 @@ app.use(fleek.validator().catch((ctx) => {
 app.use(fleek.router.controllers(`${__dirname}/../../../controllers`));
 
 // Run Server
-app.listen(CONFIG.local.port);
-log.info(`REST service listening on port: ${CONFIG.local.port}`);
+app.listen(process.env.MICRON_SERVICE_HTTP_PORT);
+log.info(`REST service listening on port: ${process.env.MICRON_SERVICE_HTTP_PORT}`);

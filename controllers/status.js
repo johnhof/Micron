@@ -2,10 +2,6 @@
 
 let request = require('request-promise');
 let _ = require('lodash');
-let comise = require('comise');
-
-const CONFIG = require('config');
-
 
 let probe = function (config) {
   return comise(function *(){
@@ -42,7 +38,7 @@ probe.all = (set) => {
 }
 
 
-module.exports.get = function *() {
+module.exports.get = () => {
   let ctx = this;
   let response = {
     status: 'OK',
@@ -53,8 +49,7 @@ module.exports.get = function *() {
 
   // get the status of other micron services
   if (!ctx.request.query.shallow) {
-
-    let services = yield ctx.micron.status();
+    let services = ctx.micron.status();
     response.services = _.map(services, (content, name) => {
       return {
         name: name,
@@ -63,7 +58,7 @@ module.exports.get = function *() {
     });
   }
 
-  response.resources = yield probe.all(CONFIG.resources);
+  response.resources = probe.all(CONFIG.resources);
 
   ctx.respond(response);
 };

@@ -1,63 +1,37 @@
 {
   "name": "micron",
-  "version": "1.2.3",
+  "version": "2.0.0",
   "description": "Micron microservice template",
-  "main": "server.js",
+  "main": "server",
   "scripts": {
     "test": "mocha ./tests/*",
-    "start": "node server --env dev"
+    "start": ". config/config.env && node server --env dev"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/johnhof/micron.git"
   },
   "author": "John Hofrichter",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/johnhof/micron/issues"
   },
   "homepage": "https://github.com/johnhof/micron",
   "dependencies": {
-    "app-root-path": "^1.0.0",
-    "assert": "^1.3.0",
-    "async": "^1.4.2",
-    "bcrypt": "^0.8.5",
-    "bunyan": "^1.7.1",
+    "bunyan": "^1.8.5",
     "bunyan-format": "^0.2.1",
-    "case": "^1.4.1",
+    "case": "^1.4.2",
     "chalk": "^1.1.3",
-    "chance": "^0.8.0",
-    "cli-color": "^1.0.0",
-    "co": "^4.6.0",
-    "comise": "^1.0.1",
-    "commander": "^2.8.1",
-    "config": "file:./lib/configurator",
-    "fleek": "^2.0.0",
-    "genit": "^1.0.2",
+    "commander": "^2.9.0",
+    "fleek": "^2.1.1",
     "koa": "^2.0.0",
-    "koa-bodyparser": "^2.0.1",
+    "koa-bodyparser": "^2.3.0",
     "koa-convert": "^1.2.0",
-    "koa-logger": "^1.3.0",
-    "koa-lusca": "^2.1.0",
-    "koa-morgan": "^0.4.0",
-    "koa-response-time": "^1.0.2",
-    "koa-router": "^5.2.3",
-    "koa-waterline": "^2.0.1",
-    "lodash": "^3.10.1",
-    "merge-defaults": "^0.2.1",
-    "micron-client": "^1.0.2",
-    "mkdirp": "^0.5.1",
-    "moment": "^2.10.6",
-    "request-promise": "^3.0.0",
-    "sails-couchdb-orm": "git+ssh://git@github.com:gohart/sails-couchdb-orm.git#master",
-    "string-template": "^0.2.1",
-    "thenify": "^3.1.0",
-    "uuid": "^2.0.1",
-    "zeromatter": "^1.0.2",
-    "zquest": "^1.1.2"
+    "koa-lusca": "^2.2.0",
+    "micron-client": "^3.0.2",
+    "promise-request": "^0.1.2",
+    "request-promise": "^4.1.1",
+    "zeromatter": "^1.1.1"
   },
-  "devDependencies": {
-    "chai": "^3.3.0",
-    "mocha": "^2.3.3"
-  }
+  "devDependencies": {}
 }
