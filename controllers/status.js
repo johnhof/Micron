@@ -1,64 +1,109 @@
 'use strict';
 
 let request = require('request-promise');
-let _ = require('lodash');
+let moment = require('moment');
+let URL = require('url');
 
-let probe = function (config) {
-  return comise(function *(){
-    let host = config.host;
-    let result;
+const PACKAGE = require('../package.json');
 
-    if (!host) return { error: 'Probe failed' };
-    if (config.port) host = host + ':' + config.port;
-    try {
-      result = yield request.get('http://' + host);
-    } catch (e) {
-      if (!/parse\s+error/i.test(e.stack)) console.log(e.name + ': ' + e.message);
-      let eIs = (str) => e.stack.indexOf(str) === -1;
-      result = (eIs('ECONNREFUSED') && eIs('ENOTFOUND') && eIs('ETIMEDOUT'));
-    }
-
-    return {
-      host: host,
-      alive: !!result
-    };
-  });
-};
-
-probe.all = (set) => {
-  return Promise.all(_.map(set, (config, name) => {
-    return comise(function *(){
-      let probeResult = yield probe(config);
-      return {
-        name: name,
-        alive: probeResult.alive
-      };
-    });
-  }));
-}
+const VAR = process.env;
+const STATUS_TIMEOUT = 10000;
 
 
-module.exports.get = () => {
-  let ctx = this;
+module.exports.get = (ctx, next) => {
+  let now = moment();
   let response = {
     status: 'OK',
-    version: CONFIG.package.version,
+    version: PACKAGE.version,
+    external: [],
     resources: [],
-    services: []
+    services: [],
+    time: {
+      full: now.toISOString(),
+      date: now.format('MM/DD/YYYY'),
+      time: now.format('hh:mm:ss:ms A'),
+      offset: now.utcOffset(),
+    }
   };
 
-  // get the status of other micron services
-  if (!ctx.request.query.shallow) {
-    let services = ctx.micron.status();
-    response.services = _.map(services, (content, name) => {
-      return {
-        name: name,
-        alive: !!(content && content.status)
+
+  if (ctx.request.query.shallow) return next();
+
+  return parallelize([
+    //
+    // External
+    //
+    probe.all().then((r) => response.external = r),
+
+    //
+    // Resources
+    //
+    probe.all([
+      {
+        name: 'couchdb',
+        host: VAR.MICRON_COUCHDB_HOST,
+        port: VAR.MICRON_COUCHDB_PORT
       }
+    ]).then((r) => response.resources = r),
+
+    //
+    // Services
+    //
+    probe.all().then((r) => response.services = r),
+
+    //
+    // Complete
+    //
+  ], STATUS_TIMEOUT)
+    .then(() => ctx.respond(response))
+    .catch((e) => {
+      console.log(e.toString());
+      response.status = 'ERROR';
+        ctx.respond(e.status || 500, response)
     });
-  }
-
-  response.resources = probe.all(CONFIG.resources);
-
-  ctx.respond(response);
 };
+
+//
+// Helpers
+//
+
+//
+// Probe
+let probe = (config) => {
+  config.protocol = config.protocol || 'http';
+  return request.get(URL.format(config)).then((r) => ({
+    name: config.name,
+    alive: (r.status >= 200 && r.status < 300)
+  }));
+};
+
+//
+// Probe All
+probe.all = (configs=[]) => {
+  let promises = [];
+  for (let config of configs) promises.push(probe(config));
+  return parallelize(promises);
+};
+
+//
+// Parallelize
+let parallelize = (promises=[], timeout) => {
+  return new Promise((resolve, reject) => {
+    let count = promises.length;
+    let results = [];
+    if (!count) resolve([]);
+
+    for (let p of promises) {
+      p.then((r) => {
+        results.push(r);
+        if (results.length === count) resolve(results);
+      }).catch(reject);
+    }
+
+    if (timeout) setTimeout((() => {
+      let e = Error('STATUS GATEWAY TIMEOUT');
+      e.status = 504;
+      reject(e)
+    }), timeout);
+  });
+}

@@ -17,7 +17,7 @@ const VAR = process.env;
 //
 // All important ascii art
 //
-
+console.log(VAR.ENVIRONMENT === 'development')
 if ((VAR.ENVIRONMENT === 'development') && fs.existsSync(VAR.MICRON_MOTD_ASCII)) {
   let text = (VAR.MICRON_MOTD_TEXT || '').split('::');
   let colorize = chalk[VAR.MICRON_MOTD_COLOR] || ((s)=>s);
@@ -38,7 +38,7 @@ _.each(VAR.MICRON_SERVICES.split(','), (service, index) => {
     log.error(error);
     throw error;
   }
-  
+
   // Spawn process
   let command = PROGRAM.appendParams([servicePath]);
   let proc = spawn('node', command, { stdio: 'inherit' });
