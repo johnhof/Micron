@@ -17,7 +17,6 @@ const VAR = process.env;
 //
 // All important ascii art
 //
-console.log(VAR.ENVIRONMENT === 'development')
 if ((VAR.ENVIRONMENT === 'development') && fs.existsSync(VAR.MICRON_MOTD_ASCII)) {
   let text = (VAR.MICRON_MOTD_TEXT || '').split('::');
   let colorize = chalk[VAR.MICRON_MOTD_COLOR] || ((s)=>s);
