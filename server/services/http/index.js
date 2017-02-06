@@ -5,13 +5,16 @@ let Koa = require('koa');
 let convert = require('koa-convert');
 let micron = require('micron-client');
 let parser = require('koa-bodyparser');
+let swagger = require('swagger-injector');
 
 let log = require('../../../lib/log').init('http');
 let middleware = require('../../../lib/middleware');
 
 let fleek = require('fleek');
 
+const PACKAGE = require('../../../package.json');
 const PROGRAM = require('../../../lib/commander');
+const SWAGGER = fleek.parser.parse(`${__dirname}/../../../config/api.json`);
 
 let app = new Koa();
 
@@ -21,15 +24,40 @@ app.use(convert(parser()));
 // Request Logging
 app.use(middleware.logger());
 
-// Request Logging
+// Response binding
 app.use(middleware.responseBinder());
 
 // Error handling
 app.use(middleware.errorHandler());
 
+app.use(swagger.koa({
+  swagger: SWAGGER,
+  prefix: SWAGGER.basePath,
+  authentication: {
+    sources: ['query'],
+    key: 'foo',
+    value: 'bar'
+  },
+  unauthorized: (ctx, next) => {
+    ctx.status = 401
+    ctx.body = {
+      code: 200,
+      meta: {
+        version: PACKAGE.version
+      },
+      error: {
+        description: 'Not authorized'
+      }
+    }
+    return Promise.resolve();
+  }
+}))
+
 // micron
 // app.use(micron.middleware.koa(process.env..services));
-app.use(fleek.context(fleek.parser.parse(`${__dirname}/../../../config/api.json`)));
+
+// fleek context
+app.use(fleek.context(SWAGGER));
 
 app.use(fleek.validator().catch((ctx) => {
   ctx.respond(400, {

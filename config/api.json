@@ -9,7 +9,7 @@
   "schemes": [
     "https"
   ],
-  "basePath": "/v1",
+  "basePath": "/v2",
   "consumes": [
     "application/json"
   ],
@@ -27,20 +27,14 @@
     "BaseResponse": {
       "type": "object",
       "required": [
-        "data",
-        "status",
-        "success"
+        "code",
+        "meta"
       ],
       "properties": {
-        "success": {
-
-          "type": "boolean",
-          "default": false
-        },
-        "data": {
+        "meta": {
           "type": "object"
         },
-        "status": {
+        "code": {
           "type": "integer",
           "minimum": 100,
           "maximum": 600
@@ -52,11 +46,8 @@
         "$ref": "#/definitions/BaseResponse"
       }, {
         "properties": {
-          "success": {
-            "default": true
-          },
-          "data": {},
-          "status": {
+          "meta": {},
+          "code": {
             "default": 200
           }
         }
@@ -67,13 +58,10 @@
         "$ref": "#/definitions/BaseResponse"
       }, {
         "properties": {
-          "success": {
-            "default": true
-          },
-          "data": {
+          "meta": {
             "default": "Created"
           },
-          "status": {
+          "code": {
             "default": 201
           }
         }
@@ -84,10 +72,10 @@
         "$ref": "#/definitions/BaseResponse"
       }, {
         "properties": {
-          "data": {
+          "meta": {
             "default": "Bad Request"
           },
-          "status": {
+          "code": {
             "default": 400
           }
         }
@@ -98,10 +86,10 @@
         "$ref": "#/definitions/BaseResponse"
       }, {
         "properties": {
-          "data": {
+          "meta": {
             "default": "Unauthorized"
           },
-          "status": {
+          "code": {
             "default": 401
           }
         }
@@ -112,10 +100,10 @@
         "$ref": "#/definitions/BaseResponse"
       }, {
         "properties": {
-          "data": {
+          "meta": {
             "default": "Not Found"
           },
-          "status": {
+          "code": {
             "default": 404
           }
         }
@@ -126,10 +114,10 @@
         "$ref": "#/definitions/BaseResponse"
       }, {
         "properties": {
-          "data": {
+          "meta": {
             "default": "Internal Server Error"
           },
-          "status": {
+          "code": {
             "default": 500
           }
         }

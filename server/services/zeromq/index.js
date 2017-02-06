@@ -11,6 +11,7 @@ let middleware = require('../../../lib/middleware');
 let fleek = require('fleek');
 
 const PROGRAM = require('../../../lib/commander');
+const SWAGGER = fleek.parser.parse(`${__dirname}/../../../config/api.json`);
 
 let app = zeromatter(process.env.MICRON_SERVICE_ZMQ_PORT);
 
@@ -30,7 +31,7 @@ app.use(contextBuilder());
 app.use(middleware.logger());
 
 // Fleek context
-app.use(fleek.context(fleek.parser.parse(`${__dirname}/../../../config/api.json`)));
+app.use(fleek.context(SWAGGER));
 
 app.use(fleek.validator().catch((ctx) => {
   ctx.respond(400, {

@@ -24,9 +24,56 @@
           }
         }
       }
+    },
+    "put": {
+      "description": "Update foo",
+      "tags": [
+        "foo"
+      ],
+      "responses": {
+        "200": {
+          "schema": {
+            "$ref": "#/definitions/200"
+          }
+        },
+        "500": {
+          "schema": {
+            "$ref": "#/definitions/500"
+          }
+        },
+        "parameters": [{
+          "name": "first_name",
+          "in": "body",
+          "description": "User first name",
+          "type": "string"
+        }, {
+          "name": "last_name",
+          "in": "body",
+          "description": "User last name",
+          "type": "string"
+        }]
+      }
+    },
+    "delete": {
+      "description": "Remove foo",
+      "tags": [
+        "foo"
+      ],
+      "responses": {
+        "200": {
+          "schema": {
+            "$ref": "#/definitions/200"
+          }
+        }
+      },
+      "500": {
+        "schema": {
+          "$ref": "#/definitions/500"
+        }
+      }
     }
   },
-  "/foo/create": {
+  "/foo": {
     "post": {
       "description": "Create foo",
       "tags": [
@@ -68,57 +115,6 @@
           "schema": {
             "$ref": "#/definitions/500"
           }
-        }
-      }
-    }
-  },
-  "/foo/:id/update": {
-    "put": {
-      "description": "Update foo",
-      "tags": [
-        "foo"
-      ],
-      "responses": {
-        "200": {
-          "schema": {
-            "$ref": "#/definitions/200"
-          }
-        },
-        "500": {
-          "schema": {
-            "$ref": "#/definitions/500"
-          }
-        },
-        "parameters": [{
-          "name": "first_name",
-          "in": "body",
-          "description": "User first name",
-          "type": "string"
-        }, {
-          "name": "last_name",
-          "in": "body",
-          "description": "User last name",
-          "type": "string"
-        }]
-      }
-    }
-  },
-  "/foo/:id/remove": {
-    "delete": {
-      "description": "Remove foo",
-      "tags": [
-        "foo"
-      ],
-      "responses": {
-        "200": {
-          "schema": {
-            "$ref": "#/definitions/200"
-          }
-        }
-      },
-      "500": {
-        "schema": {
-          "$ref": "#/definitions/500"
         }
       }
     }

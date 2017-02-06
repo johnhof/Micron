@@ -31,6 +31,7 @@
     "micron-client": "^3.0.2",
     "promise-request": "^0.1.2",
     "request-promise": "^4.1.1",
+    "swagger-injector": "^3.0.0",
     "zeromatter": "^1.1.1"
   },
   "devDependencies": {}
