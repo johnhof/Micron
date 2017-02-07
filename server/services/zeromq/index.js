@@ -11,7 +11,7 @@ let middleware = require('../../../lib/middleware');
 let fleek = require('fleek');
 
 const PROGRAM = require('../../../lib/commander');
-const SWAGGER = fleek.parser.parse(`${__dirname}/../../../config/api.json`);
+const SWAGGER = fleek.parser.parse(`${__dirname}/../../../config/api/index.json`);
 
 let app = zeromatter(process.env.MICRON_SERVICE_ZMQ_PORT);
 

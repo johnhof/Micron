@@ -14,7 +14,7 @@ let fleek = require('fleek');
 
 const PACKAGE = require('../../../package.json');
 const PROGRAM = require('../../../lib/commander');
-const SWAGGER = fleek.parser.parse(`${__dirname}/../../../config/api.json`);
+const SWAGGER = fleek.parser.parse(`${__dirname}/../../../config/api/index.json`);
 
 let app = new Koa();
 
